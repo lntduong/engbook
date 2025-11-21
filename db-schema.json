@@ -1,0 +1,169 @@
+﻿{
+    "object":  "database",
+    "id":  "2b1562aa-ee72-8055-9ace-ca422117b6af",
+    "cover":  null,
+    "icon":  null,
+    "created_time":  "2025-11-20T03:38:00.000Z",
+    "created_by":  {
+                       "object":  "user",
+                       "id":  "abfee7b9-3fa9-41a5-8856-6762d8d89ac2"
+                   },
+    "last_edited_by":  {
+                           "object":  "user",
+                           "id":  "abfee7b9-3fa9-41a5-8856-6762d8d89ac2"
+                       },
+    "last_edited_time":  "2025-11-20T03:42:00.000Z",
+    "title":  [
+                  {
+                      "type":  "text",
+                      "text":  {
+                                   "content":  "Vocabulary",
+                                   "link":  null
+                               },
+                      "annotations":  {
+                                          "bold":  false,
+                                          "italic":  false,
+                                          "strikethrough":  false,
+                                          "underline":  false,
+                                          "code":  false,
+                                          "color":  "default"
+                                      },
+                      "plain_text":  "Vocabulary",
+                      "href":  null
+                  }
+              ],
+    "description":  [
+
+                    ],
+    "is_inline":  true,
+    "properties":  {
+                       "Type ":  {
+                                     "id":  "%3F%5E%7CW",
+                                     "name":  "Type ",
+                                     "description":  null,
+                                     "type":  "select",
+                                     "select":  {
+                                                    "options":  [
+                                                                    {
+                                                                        "id":  "kbyf",
+                                                                        "name":  "idiom",
+                                                                        "color":  "default",
+                                                                        "description":  null
+                                                                    },
+                                                                    {
+                                                                        "id":  "vVZ\\",
+                                                                        "name":  "phrase",
+                                                                        "color":  "blue",
+                                                                        "description":  null
+                                                                    },
+                                                                    {
+                                                                        "id":  "p@uo",
+                                                                        "name":  "adverb",
+                                                                        "color":  "yellow",
+                                                                        "description":  null
+                                                                    },
+                                                                    {
+                                                                        "id":  "ds{O",
+                                                                        "name":  "adjective",
+                                                                        "color":  "gray",
+                                                                        "description":  null
+                                                                    },
+                                                                    {
+                                                                        "id":  "rqin",
+                                                                        "name":  "verb",
+                                                                        "color":  "purple",
+                                                                        "description":  null
+                                                                    },
+                                                                    {
+                                                                        "id":  "`^z^",
+                                                                        "name":  "noun",
+                                                                        "color":  "brown",
+                                                                        "description":  null
+                                                                    }
+                                                                ]
+                                                }
+                                 },
+                       "Level ":  {
+                                      "id":  "WVmn",
+                                      "name":  "Level ",
+                                      "description":  null,
+                                      "type":  "select",
+                                      "select":  {
+                                                     "options":  [
+                                                                     {
+                                                                         "id":  "q\\;^",
+                                                                         "name":  "C2",
+                                                                         "color":  "brown",
+                                                                         "description":  null
+                                                                     },
+                                                                     {
+                                                                         "id":  "X|xC",
+                                                                         "name":  "C1",
+                                                                         "color":  "orange",
+                                                                         "description":  null
+                                                                     },
+                                                                     {
+                                                                         "id":  "L^@t",
+                                                                         "name":  "B2",
+                                                                         "color":  "purple",
+                                                                         "description":  null
+                                                                     },
+                                                                     {
+                                                                         "id":  "D|hK",
+                                                                         "name":  "B1",
+                                                                         "color":  "red",
+                                                                         "description":  null
+                                                                     },
+                                                                     {
+                                                                         "id":  "AA|e",
+                                                                         "name":  "A2",
+                                                                         "color":  "green",
+                                                                         "description":  null
+                                                                     },
+                                                                     {
+                                                                         "id":  "ok;O",
+                                                                         "name":  "A1",
+                                                                         "color":  "pink",
+                                                                         "description":  null
+                                                                     }
+                                                                 ]
+                                                 }
+                                  },
+                       "IPA":  {
+                                   "id":  "nWHk",
+                                   "name":  "IPA",
+                                   "description":  null,
+                                   "type":  "rich_text",
+                                   "rich_text":  {
+
+                                                 }
+                               },
+                       "Meaning":  {
+                                       "id":  "n~s%3B",
+                                       "name":  "Meaning",
+                                       "description":  null,
+                                       "type":  "rich_text",
+                                       "rich_text":  {
+
+                                                     }
+                                   },
+                       " Word ":  {
+                                      "id":  "title",
+                                      "name":  " Word ",
+                                      "description":  null,
+                                      "type":  "title",
+                                      "title":  {
+
+                                                }
+                                  }
+                   },
+    "parent":  {
+                   "type":  "page_id",
+                   "page_id":  "2b1562aa-ee72-8097-92dd-e70e07ef1990"
+               },
+    "url":  "https://www.notion.so/2b1562aaee7280559aceca422117b6af",
+    "public_url":  null,
+    "archived":  false,
+    "in_trash":  false,
+    "request_id":  "cde33dd9-f0e2-4d57-98c1-3d4fba055f41"
+}
