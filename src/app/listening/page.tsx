@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import ListeningSidebar from '@/components/ListeningSidebar';
 import ListeningList from '@/components/ListeningList';
 import AddListeningModal from '@/components/AddListeningModal';
@@ -67,8 +65,6 @@ export default function ListeningPage() {
 
     return (
         <div className="min-h-screen">
-            <Header />
-
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 {/* Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
@@ -127,8 +123,6 @@ export default function ListeningPage() {
                     onAdd={handleAddEpisode}
                 />
             </main>
-
-            <Footer />
         </div>
     );
 }

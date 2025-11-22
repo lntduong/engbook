@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import FilterBar from '@/components/FilterBar';
 import VocabTable from '@/components/VocabTable';
 import AddWordModal from '@/components/AddWordModal';
@@ -73,9 +71,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Vocabulary Box</h1>
@@ -111,9 +107,7 @@ export default function Home() {
           onClose={() => setIsModalOpen(false)}
           onAdd={handleAddWord}
         />
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 }

@@ -45,6 +45,11 @@ export default function Header() {
                 <StickyNote className="w-4 h-4 mr-2" /> Flashcard
               </Link>
             </Button>
+            <Button variant="ghost" asChild className="text-sm font-medium text-slate-600 hover:bg-slate-100/50 hover:text-blue-600 transition-all">
+              <Link href="/notes">
+                <FileText className="w-4 h-4 mr-2" /> Notes
+              </Link>
+            </Button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -61,9 +66,6 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-2">
             <Button variant="ghost" size="sm" className="text-slate-500 hover:text-slate-900 hover:bg-slate-100/50">
               <Book className="w-4 h-4 mr-2" /> Handbook
-            </Button>
-            <Button variant="ghost" size="sm" className="text-slate-500 hover:text-slate-900 hover:bg-slate-100/50">
-              <FileText className="w-4 h-4 mr-2" /> Tests
             </Button>
           </div>
         </div>
@@ -90,6 +92,11 @@ export default function Header() {
               <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
                 <Link href="/flashcard" onClick={() => setMobileMenuOpen(false)}>
                   <StickyNote className="w-4 h-4 mr-2" /> Flashcard
+                </Link>
+              </Button>
+              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
+                <Link href="/notes" onClick={() => setMobileMenuOpen(false)}>
+                  <FileText className="w-4 h-4 mr-2" /> Notes
                 </Link>
               </Button>
             </nav>

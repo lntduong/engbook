@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header';
 import FlashcardCard from '@/components/FlashcardCard';
 import FlashcardControls from '@/components/FlashcardControls';
 import FlashcardNav from '@/components/FlashcardNav';
@@ -141,7 +140,6 @@ export default function FlashcardPage() {
 
     return (
         <div className="min-h-screen pb-20">
-            <Header />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Back Button & Title */}
