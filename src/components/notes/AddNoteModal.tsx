@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Note } from '@/lib/notes';
-// import NoteEditor from './NoteEditor';
 import {
     Dialog,
     DialogContent,
