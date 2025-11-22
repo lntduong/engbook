@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import ListeningSidebar from '@/components/ListeningSidebar';
 import ListeningList from '@/components/ListeningList';
 import AddListeningModal from '@/components/AddListeningModal';
@@ -23,6 +24,8 @@ interface ListeningEpisode {
 
 export default function ListeningPage() {
     const router = useRouter();
+    const { data: session } = useSession();
+    const isAdmin = session?.user?.role === 'ADMIN';
     const [episodes, setEpisodes] = useState<ListeningEpisode[]>([]);
     const [selectedTopic, setSelectedTopic] = useState('ALL');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,14 +91,16 @@ export default function ListeningPage() {
                         </div>
                     </div>
 
-                    <Button
-                        onClick={() => setIsModalOpen(true)}
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 w-full sm:w-auto"
-                    >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add Episode
-                    </Button>
+                    {isAdmin && (
+                        <Button
+                            onClick={() => setIsModalOpen(true)}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 w-full sm:w-auto"
+                        >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Episode
+                        </Button>
+                    )}
                 </div>
 
                 {/* Main Content */}
@@ -122,7 +127,7 @@ export default function ListeningPage() {
                     onClose={() => setIsModalOpen(false)}
                     onAdd={handleAddEpisode}
                 />
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

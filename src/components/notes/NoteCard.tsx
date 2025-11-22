@@ -1,4 +1,7 @@
+'use client';
+
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { Note } from '@/lib/notes';
 import { DeleteAlert } from './DeleteAlert';
 
@@ -9,6 +12,8 @@ interface NoteCardProps {
 }
 
 export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
+    const { data: session } = useSession();
+    const isAdmin = session?.user?.role === 'ADMIN';
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
     // Strip HTML tags for preview
@@ -32,20 +37,22 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
                     <h3 className="text-xl font-semibold text-gray-800 flex-1">
                         📝 {note.title}
                     </h3>
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => onEdit(note)}
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors"
-                        >
-                            Edit
-                        </button>
-                        <button
-                            onClick={() => setShowDeleteAlert(true)}
-                            className="text-red-600 hover:text-red-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-colors"
-                        >
-                            Delete
-                        </button>
-                    </div>
+                    {isAdmin && (
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => onEdit(note)}
+                                className="text-blue-600 hover:text-blue-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => setShowDeleteAlert(true)}
+                                className="text-red-600 hover:text-red-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-colors"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {note.category && (

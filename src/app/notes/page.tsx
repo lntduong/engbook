@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { Note } from '@/lib/notes';
 import { useRouter } from 'next/navigation';
 import NotesList from '@/components/notes/NotesList';
@@ -10,6 +11,8 @@ import { Plus, Search, Filter, ArrowLeft } from 'lucide-react';
 
 export default function NotesPage() {
     const router = useRouter();
+    const { data: session } = useSession();
+    const isAdmin = session?.user?.role === 'ADMIN';
     const [notes, setNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -148,14 +151,15 @@ export default function NotesPage() {
                         </div>
                     </div>
 
-                    <Button
-                        onClick={handleAddNewClick}
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 w-full sm:w-auto"
-                    >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add New Note
-                    </Button>
+                    {isAdmin && (
+                        <Button
+                            onClick={handleAddNewClick}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                        >
+                            <Plus size={20} />
+                            Add New Note
+                        </Button>
+                    )}
                 </div>
 
                 {/* Filters Section */}

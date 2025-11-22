@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import FilterBar from '@/components/FilterBar';
 import VocabTable from '@/components/VocabTable';
 import AddWordModal from '@/components/AddWordModal';
@@ -20,6 +21,9 @@ interface VocabItem {
 }
 
 export default function Home() {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === 'ADMIN';
+
   const [vocabList, setVocabList] = useState<VocabItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [levelFilter, setLevelFilter] = useState('ALL');
@@ -77,12 +81,14 @@ export default function Home() {
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Vocabulary Box</h1>
             <p className="text-slate-500 mt-1">Manage and track your English vocabulary journey.</p>
           </div>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 transition-all hover:scale-105"
-          >
-            <Plus className="w-4 h-4 mr-2" /> Add Word
-          </Button>
+          {isAdmin && (
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-lg shadow-blue-600/20 transition-all hover:scale-105"
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add Word
+            </Button>
+          )}
         </div>
 
         <FilterBar

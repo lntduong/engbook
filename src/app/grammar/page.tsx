@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import GrammarSidebar from '@/components/GrammarSidebar';
 import GrammarList from '@/components/GrammarList';
 import AddGrammarModal from '@/components/AddGrammarModal';
@@ -23,6 +24,8 @@ interface GrammarItem {
 
 export default function GrammarPage() {
     const router = useRouter();
+    const { data: session } = useSession();
+    const isAdmin = session?.user?.role === 'ADMIN';
     const [grammarList, setGrammarList] = useState<GrammarItem[]>([]);
     const [selectedLevel, setSelectedLevel] = useState('ALL');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -82,14 +85,16 @@ export default function GrammarPage() {
                         </div>
                     </div>
 
-                    <Button
-                        onClick={() => setIsModalOpen(true)}
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 w-full sm:w-auto"
-                    >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add Grammar
-                    </Button>
+                    {isAdmin && (
+                        <Button
+                            onClick={() => setIsModalOpen(true)}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 w-full sm:w-auto"
+                        >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Grammar
+                        </Button>
+                    )}
                 </div>
 
                 {/* Main Content */}
