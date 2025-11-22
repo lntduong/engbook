@@ -76,7 +76,7 @@ export default function Header() {
                     {session.user?.name || session.user?.email}
                   </span>
                   {session.user?.role === 'ADMIN' && (
-                    <Shield className="w-4 h-4 text-purple-600" title="Admin" />
+                    <Shield className="w-4 h-4 text-purple-600" />
                   )}
                 </div>
                 {session.user?.role === 'ADMIN' && (

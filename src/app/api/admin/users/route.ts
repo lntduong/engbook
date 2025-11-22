@@ -52,7 +52,7 @@ export async function PATCH(request: Request) {
 
         if (!validated.success) {
             return NextResponse.json(
-                { error: validated.error.errors[0].message },
+                { error: validated.error.issues[0].message },
                 { status: 400 }
             );
         }
@@ -102,17 +102,25 @@ export async function DELETE(request: Request) {
             );
         }
 
-        const body = await request.json();
-        const validated = deleteUserSchema.safeParse(body);
+        const { searchParams } = new URL(request.url);
+        const userIdParam = searchParams.get('userId');
 
-        if (!validated.success) {
+        if (!userIdParam) {
             return NextResponse.json(
-                { error: validated.error.errors[0].message },
+                { error: 'User ID is required' },
                 { status: 400 }
             );
         }
 
-        const { userId } = validated.data;
+        const userId = parseInt(userIdParam);
+        const validated = deleteUserSchema.safeParse({ userId });
+
+        if (!validated.success) {
+            return NextResponse.json(
+                { error: validated.error.issues[0].message },
+                { status: 400 }
+            );
+        }
 
         // Prevent admin from deleting themselves
         if (userId.toString() === session.user.id) {
