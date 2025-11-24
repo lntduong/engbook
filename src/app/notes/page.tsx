@@ -7,6 +7,13 @@ import { useRouter } from 'next/navigation';
 import NotesList from '@/components/notes/NotesList';
 import AddNoteModal from '@/components/notes/AddNoteModal';
 import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Plus, Search, Filter, ArrowLeft } from 'lucide-react';
 
 export default function NotesPage() {
@@ -19,7 +26,7 @@ export default function NotesPage() {
     const [editingNote, setEditingNote] = useState<Note | null>(null);
     const [categories, setCategories] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('ALL');
 
     // Fetch notes and options on mount
     useEffect(() => {
@@ -123,7 +130,7 @@ export default function NotesPage() {
             note.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
             note.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-        const matchesCategory = selectedCategory ? note.category === selectedCategory : true;
+        const matchesCategory = selectedCategory === 'ALL' ? true : note.category === selectedCategory;
 
         return matchesSearch && matchesCategory;
     });
@@ -177,16 +184,17 @@ export default function NotesPage() {
                         </div>
                         <div className="flex items-center gap-2 min-w-[200px]">
                             <Filter size={18} className="text-gray-500" />
-                            <select
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            >
-                                <option value="">All Categories</option>
-                                {categories.map(cat => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
+                            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                <SelectTrigger className="flex-1 bg-white border-gray-200">
+                                    <SelectValue placeholder="All Categories" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="ALL">All Categories</SelectItem>
+                                    {categories.map(cat => (
+                                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </div>
