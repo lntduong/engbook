@@ -25,15 +25,19 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
         title: '',
         level: 'A1',
         category: '',
+        customCategory: '',
         order: 1,
         explanation: '',
-        structure: '',
-        examples: '',
         notes: '',
     });
 
+    const [items, setItems] = useState<{ structure: string; example: string }[]>([
+        { structure: '', example: '' }
+    ]);
+
     const [levelOptions, setLevelOptions] = useState<string[]>([]);
     const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+    const [isCustomCategory, setIsCustomCategory] = useState(false);
 
     useEffect(() => {
         // Fetch options from API
@@ -46,28 +50,60 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
             .catch(err => console.error('Failed to fetch options:', err));
     }, []);
 
+    const handleAddItem = () => {
+        setItems([...items, { structure: '', example: '' }]);
+    };
+
+    const handleRemoveItem = (index: number) => {
+        const newItems = items.filter((_, i) => i !== index);
+        setItems(newItems.length ? newItems : [{ structure: '', example: '' }]);
+    };
+
+    const handleItemChange = (index: number, field: 'structure' | 'example', value: string) => {
+        const newItems = [...items];
+        newItems[index][field] = value;
+        setItems(newItems);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        const finalCategory = isCustomCategory ? formData.customCategory : formData.category;
+        const structure = items.map(item => item.structure).join('\n');
+        const examples = items.map(item => item.example).join('\n');
 
         try {
             const res = await fetch('/api/grammar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    category: finalCategory,
+                    structure,
+                    examples,
+                }),
             });
 
             if (res.ok) {
-                onAdd({ ...formData, id: 'temp-id', dateAdded: Date.now() });
+                onAdd({
+                    ...formData,
+                    category: finalCategory,
+                    structure,
+                    examples,
+                    id: 'temp-id',
+                    dateAdded: Date.now()
+                });
                 setFormData({
                     title: '',
                     level: 'A1',
                     category: '',
+                    customCategory: '',
                     order: 1,
                     explanation: '',
-                    structure: '',
-                    examples: '',
                     notes: '',
                 });
+                setItems([{ structure: '', example: '' }]);
+                setIsCustomCategory(false);
                 onClose();
             } else {
                 console.error('Failed to add grammar');
@@ -79,14 +115,14 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-slate-900">
                         Add Grammar Topic
                     </DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Title */}
                     <div>
                         <Label htmlFor="title">Title *</Label>
@@ -94,7 +130,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             id="title"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            placeholder="e.g., Present Simple Tense"
+                            placeholder="e.g., Like/Dislike"
                             required
                         />
                     </div>
@@ -117,16 +153,38 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
 
                         <div>
                             <Label htmlFor="category">Category *</Label>
-                            <Select value={formData.category} onValueChange={(val) => setFormData({ ...formData, category: val })}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categoryOptions.map(cat => (
-                                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="space-y-2">
+                                <Select
+                                    value={isCustomCategory ? 'other' : formData.category}
+                                    onValueChange={(val) => {
+                                        if (val === 'other') {
+                                            setIsCustomCategory(true);
+                                            setFormData({ ...formData, category: '' });
+                                        } else {
+                                            setIsCustomCategory(false);
+                                            setFormData({ ...formData, category: val });
+                                        }
+                                    }}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {categoryOptions.map(cat => (
+                                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                        ))}
+                                        <SelectItem value="other">Other...</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {isCustomCategory && (
+                                    <Input
+                                        placeholder="Enter new category name"
+                                        value={formData.customCategory}
+                                        onChange={(e) => setFormData({ ...formData, customCategory: e.target.value })}
+                                        required
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -142,17 +200,6 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                         />
                     </div>
 
-                    {/* Structure */}
-                    <div>
-                        <Label htmlFor="structure">Structure (optional)</Label>
-                        <Input
-                            id="structure"
-                            value={formData.structure}
-                            onChange={(e) => setFormData({ ...formData, structure: e.target.value })}
-                            placeholder="e.g., S + V(s/es)"
-                        />
-                    </div>
-
                     {/* Explanation */}
                     <div>
                         <Label htmlFor="explanation">Explanation *</Label>
@@ -161,22 +208,56 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             value={formData.explanation}
                             onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
                             placeholder="Explain the grammar rule..."
-                            rows={4}
+                            rows={3}
                             required
                         />
                     </div>
 
-                    {/* Examples */}
-                    <div>
-                        <Label htmlFor="examples">Examples (one per line) *</Label>
-                        <Textarea
-                            id="examples"
-                            value={formData.examples}
-                            onChange={(e) => setFormData({ ...formData, examples: e.target.value })}
-                            placeholder="I eat breakfast every day.&#10;She works in a hospital."
-                            rows={4}
-                            required
-                        />
+                    {/* Structures and Examples */}
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label>Structures & Examples</Label>
+                            <Button type="button" variant="outline" size="sm" onClick={handleAddItem}>
+                                + Add Structure
+                            </Button>
+                        </div>
+
+                        {items.map((item, index) => (
+                            <div key={index} className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group">
+                                {items.length > 1 && (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="absolute top-2 right-2 text-slate-400 hover:text-red-500"
+                                        onClick={() => handleRemoveItem(index)}
+                                    >
+                                        ×
+                                    </Button>
+                                )}
+                                <div className="space-y-3">
+                                    <div>
+                                        <Label className="text-xs text-slate-500 uppercase tracking-wider">Structure {index + 1}</Label>
+                                        <Input
+                                            value={item.structure}
+                                            onChange={(e) => handleItemChange(index, 'structure', e.target.value)}
+                                            placeholder="e.g., I like/love + V-ing"
+                                            className="mt-1 font-mono text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label className="text-xs text-slate-500 uppercase tracking-wider">Example {index + 1}</Label>
+                                        <Input
+                                            value={item.example}
+                                            onChange={(e) => handleItemChange(index, 'example', e.target.value)}
+                                            placeholder="e.g., I love going to the cinema."
+                                            className="mt-1"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                     {/* Notes */}
@@ -191,7 +272,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                         />
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4">
+                    <div className="flex justify-end gap-3 pt-4 border-t">
                         <Button type="button" variant="outline" onClick={onClose}>
                             Cancel
                         </Button>

@@ -45,16 +45,6 @@ export default function GrammarItem({ grammar, index }: GrammarItemProps) {
                 </Badge>
             </div>
 
-            {/* Structure */}
-            {grammar.structure && (
-                <div className="mb-4">
-                    <p className="text-sm font-medium text-slate-600 mb-1">Structure:</p>
-                    <p className="text-base font-mono bg-slate-50 px-3 py-2 rounded border border-slate-200 text-slate-800">
-                        {grammar.structure}
-                    </p>
-                </div>
-            )}
-
             {/* Explanation */}
             <div className="mb-4">
                 <p className="text-sm font-medium text-slate-600 mb-1">Explanation:</p>
@@ -63,17 +53,37 @@ export default function GrammarItem({ grammar, index }: GrammarItemProps) {
                 </p>
             </div>
 
-            {/* Examples */}
+            {/* Structures and Examples */}
             <div className="mb-4">
-                <p className="text-sm font-medium text-slate-600 mb-2">Examples:</p>
-                <ul className="space-y-1.5 pl-1">
-                    {exampleList.map((example, idx) => (
-                        <li key={idx} className="flex items-start">
-                            <span className="text-blue-600 mr-2 mt-0.5">•</span>
-                            <span className="text-base text-slate-700 italic">{example}</span>
-                        </li>
-                    ))}
-                </ul>
+                <p className="text-sm font-medium text-slate-600 mb-2">Structures & Examples:</p>
+                <div className="space-y-4">
+                    {(() => {
+                        const structures = (grammar.structure || '').split('\n');
+                        const examples = grammar.examples.split('\n');
+                        const count = Math.max(structures.length, examples.length);
+
+                        return Array.from({ length: count }).map((_, idx) => (
+                            <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                {structures[idx] && (
+                                    <div className="mb-2">
+                                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Structure</span>
+                                        <p className="font-mono text-sm text-slate-800 bg-white px-2 py-1 rounded border border-slate-200 inline-block">
+                                            {structures[idx]}
+                                        </p>
+                                    </div>
+                                )}
+                                {examples[idx] && (
+                                    <div>
+                                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Example</span>
+                                        <p className="text-slate-700 italic text-sm">
+                                            "{examples[idx]}"
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        ));
+                    })()}
+                </div>
             </div>
 
             {/* Notes (collapsible) */}
