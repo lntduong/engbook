@@ -52,6 +52,11 @@ export default function Header() {
                 <FileText className="w-4 h-4 mr-2" /> Notes
               </Link>
             </Button>
+            <Button variant="ghost" asChild className="text-sm font-medium text-slate-600 hover:bg-slate-100/50 hover:text-blue-600 transition-all">
+              <Link href="/exercises">
+                <Book className="w-4 h-4 mr-2" /> Exercises
+              </Link>
+            </Button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -132,6 +137,11 @@ export default function Header() {
               <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
                 <Link href="/notes" onClick={() => setMobileMenuOpen(false)}>
                   <FileText className="w-4 h-4 mr-2" /> Notes
+                </Link>
+              </Button>
+              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
+                <Link href="/exercises" onClick={() => setMobileMenuOpen(false)}>
+                  <Book className="w-4 h-4 mr-2" /> Exercises
                 </Link>
               </Button>
 
