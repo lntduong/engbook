@@ -57,6 +57,22 @@ export default function Home() {
     await fetchVocab();
   };
 
+  const handleDeleteWord = async (id: string) => {
+    try {
+      const res = await fetch(`/api/vocab/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setVocabList(vocabList.filter(item => item.id !== id));
+      } else {
+        console.error('Failed to delete word');
+      }
+    } catch (error) {
+      console.error('Error deleting word:', error);
+    }
+  };
+
   // Extract unique lessons
   const lessonOptions = Array.from(new Set(vocabList.map(item => item.lesson).filter(Boolean))) as string[];
 
@@ -106,7 +122,12 @@ export default function Home() {
           onPageChange={setCurrentPage}
         />
 
-        <VocabTable data={currentData} startIndex={startIndex} />
+        <VocabTable
+          data={currentData}
+          startIndex={startIndex}
+          onDelete={handleDeleteWord}
+          isAdmin={isAdmin}
+        />
 
         <AddWordModal
           isOpen={isModalOpen}

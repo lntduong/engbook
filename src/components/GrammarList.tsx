@@ -17,9 +17,11 @@ interface GrammarItemType {
 
 interface GrammarListProps {
     grammarList: GrammarItemType[];
+    onDelete?: (id: string) => void;
+    isAdmin?: boolean;
 }
 
-export default function GrammarList({ grammarList }: GrammarListProps) {
+export default function GrammarList({ grammarList, onDelete, isAdmin }: GrammarListProps) {
     // Group by category
     const groupedByCategory = grammarList.reduce((acc, item) => {
         if (!acc[item.category]) {
@@ -64,7 +66,13 @@ export default function GrammarList({ grammarList }: GrammarListProps) {
                     {/* Grammar Items */}
                     <div className="space-y-4">
                         {groupedByCategory[category].map((item, idx) => (
-                            <GrammarItem key={item.id} grammar={item} index={idx} />
+                            <GrammarItem
+                                key={item.id}
+                                grammar={item}
+                                index={idx}
+                                onDelete={onDelete}
+                                isAdmin={isAdmin}
+                            />
                         ))}
                     </div>
                 </div>

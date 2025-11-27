@@ -4,7 +4,18 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface GrammarItem {
     id: string;
@@ -22,24 +33,72 @@ interface GrammarItem {
 interface GrammarItemProps {
     grammar: GrammarItem;
     index: number;
+    onDelete?: (id: string) => void;
+    isAdmin?: boolean;
 }
 
-export default function GrammarItem({ grammar, index }: GrammarItemProps) {
+export default function GrammarItem({ grammar, index, onDelete, isAdmin = false }: GrammarItemProps) {
     const [showNotes, setShowNotes] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Split examples by newline for bullet points
     const exampleList = grammar.examples.split('\n').filter(e => e.trim());
 
+    const handleDelete = async () => {
+        if (onDelete) {
+            setIsDeleting(true);
+            await onDelete(grammar.id);
+            setIsDeleting(false);
+        }
+    };
+
     return (
-        <Card className="p-6 mb-4 bg-white/80 backdrop-blur-sm border-slate-200 hover:shadow-md transition-shadow">
+        <Card className="p-6 mb-4 bg-white/80 backdrop-blur-sm border-slate-200 hover:shadow-md transition-shadow relative group">
+            {/* Delete Button for Admin */}
+            {isAdmin && onDelete && (
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                disabled={isDeleting}
+                            >
+                                <Trash2 className="w-4 h-4" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Grammar Topic?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete the grammar topic
+                                    <span className="font-bold text-slate-900"> "{grammar.title}" </span>
+                                    and all its content.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={handleDelete}
+                                    className="bg-red-600 hover:bg-red-700"
+                                >
+                                    Delete
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+            )}
+
             {/* Title and Badge */}
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-4 pr-10">
                 <h3 className="text-lg font-semibold text-slate-900">
                     {index + 1}. {grammar.title}
                 </h3>
                 <Badge
                     variant="secondary"
-                    className="ml-2 bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    className="ml-2 bg-blue-100 text-blue-700 hover:bg-blue-200 flex-shrink-0"
                 >
                     {grammar.level}
                 </Badge>

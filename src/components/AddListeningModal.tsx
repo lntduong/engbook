@@ -95,6 +95,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             placeholder="e.g., Daily Conversation - Greeting"
+                            className="mt-2"
                             required
                         />
                     </div>
@@ -104,7 +105,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                         <div>
                             <Label htmlFor="level">Level *</Label>
                             <Select value={formData.level} onValueChange={(val) => setFormData({ ...formData, level: val })}>
-                                <SelectTrigger>
+                                <SelectTrigger className="mt-2">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -118,7 +119,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                         <div>
                             <Label htmlFor="topic">Topic *</Label>
                             <Select value={formData.topic} onValueChange={(val) => setFormData({ ...formData, topic: val })}>
-                                <SelectTrigger>
+                                <SelectTrigger className="mt-2">
                                     <SelectValue placeholder="Select topic" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -139,6 +140,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             value={formData.order}
                             onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
                             min="1"
+                            className="mt-2"
                         />
                     </div>
 
@@ -151,6 +153,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             value={formData.audioUrl}
                             onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
                             placeholder="https://example.com/audio.mp3"
+                            className="mt-2"
                             required
                         />
                     </div>
@@ -163,6 +166,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             value={formData.duration}
                             onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
                             placeholder="e.g., 2:15"
+                            className="mt-2"
                         />
                     </div>
 
@@ -175,6 +179,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             onChange={(e) => setFormData({ ...formData, transcript: e.target.value })}
                             placeholder="A: Hello!&#10;B: Hi there!&#10;A: How are you?"
                             rows={6}
+                            className="mt-2"
                             required
                         />
                     </div>
@@ -188,6 +193,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                             placeholder="Additional notes or tips..."
                             rows={3}
+                            className="mt-2"
                         />
                     </div>
 

@@ -131,6 +131,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             placeholder="e.g., Like/Dislike"
+                            className="mt-2"
                             required
                         />
                     </div>
@@ -140,7 +141,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                         <div>
                             <Label htmlFor="level">Level *</Label>
                             <Select value={formData.level} onValueChange={(val) => setFormData({ ...formData, level: val })}>
-                                <SelectTrigger>
+                                <SelectTrigger className="mt-2">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -153,7 +154,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
 
                         <div>
                             <Label htmlFor="category">Category *</Label>
-                            <div className="space-y-2">
+                            <div className="space-y-2 mt-2">
                                 <Select
                                     value={isCustomCategory ? 'other' : formData.category}
                                     onValueChange={(val) => {
@@ -197,6 +198,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             value={formData.order}
                             onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
                             min="1"
+                            className="mt-2"
                         />
                     </div>
 
@@ -209,6 +211,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
                             placeholder="Explain the grammar rule..."
                             rows={3}
+                            className="mt-2"
                             required
                         />
                     </div>
@@ -242,7 +245,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                                             value={item.structure}
                                             onChange={(e) => handleItemChange(index, 'structure', e.target.value)}
                                             placeholder="e.g., I like/love + V-ing"
-                                            className="mt-1 font-mono text-sm"
+                                            className="mt-2 font-mono text-sm"
                                         />
                                     </div>
                                     <div>
@@ -251,7 +254,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                                             value={item.example}
                                             onChange={(e) => handleItemChange(index, 'example', e.target.value)}
                                             placeholder="e.g., I love going to the cinema."
-                                            className="mt-1"
+                                            className="mt-2"
                                             required
                                         />
                                     </div>
@@ -269,6 +272,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                             placeholder="Additional notes or tips..."
                             rows={3}
+                            className="mt-2"
                         />
                     </div>
 

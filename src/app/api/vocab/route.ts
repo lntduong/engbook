@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getVocab, addVocabItem } from '@/lib/notion';
+import { getVocab, addVocabItem } from '@/lib/vocabulary';
 
 export async function GET() {
     try {

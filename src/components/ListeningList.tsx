@@ -19,9 +19,11 @@ interface ListeningListProps {
     episodes: ListeningEpisodeType[];
     currentlyPlaying: string | null;
     onEpisodePlay: (episodeId: string) => void;
+    onDelete?: (id: string) => void;
+    isAdmin?: boolean;
 }
 
-export default function ListeningList({ episodes, currentlyPlaying, onEpisodePlay }: ListeningListProps) {
+export default function ListeningList({ episodes, currentlyPlaying, onEpisodePlay, onDelete, isAdmin }: ListeningListProps) {
     // Group by topic
     const groupedByTopic = episodes.reduce((acc, episode) => {
         if (!acc[episode.topic]) {
@@ -71,6 +73,8 @@ export default function ListeningList({ episodes, currentlyPlaying, onEpisodePla
                                 episode={episode}
                                 onPlay={() => onEpisodePlay(episode.id)}
                                 shouldPause={currentlyPlaying !== null && currentlyPlaying !== episode.id}
+                                onDelete={onDelete}
+                                isAdmin={isAdmin}
                             />
                         ))}
                     </div>

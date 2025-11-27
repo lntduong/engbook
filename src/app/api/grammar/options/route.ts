@@ -1,32 +1,29 @@
 import { NextResponse } from 'next/server';
-
-const notion_token = process.env.NOTION_TOKEN;
-const grammarDatabaseId = process.env.NOTION_GRAMMAR_DATABASE_ID;
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
     try {
-        const response = await fetch(
-            `https://api.notion.com/v1/databases/${grammarDatabaseId}`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${notion_token}`,
-                    'Notion-Version': '2022-06-28',
-                },
-            }
-        );
+        // Fetch distinct levels and categories from existing data
+        const distinctLevels = await prisma.grammar.findMany({
+            distinct: ['level'],
+            select: { level: true },
+            orderBy: { level: 'asc' },
+        });
 
-        if (!response.ok) {
-            throw new Error(`Notion API error: ${response.status}`);
-        }
+        const distinctCategories = await prisma.grammar.findMany({
+            distinct: ['category'],
+            select: { category: true },
+            orderBy: { category: 'asc' },
+        });
 
-        const database = await response.json();
-        const properties = database.properties;
+        const levels = distinctLevels.map(i => i.level).filter(Boolean);
+        const categories = distinctCategories.map(i => i.category).filter(Boolean);
 
-        // Extract select options for Level and Category
-        const levels = properties.Level?.select?.options?.map((opt: any) => opt.name) || [];
-        const categories = properties.Category?.select?.options?.map((opt: any) => opt.name) || [];
+        // Ensure standard levels exist if data is empty
+        const standardLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        const finalLevels = Array.from(new Set([...standardLevels, ...levels])).sort();
 
-        return NextResponse.json({ levels, categories });
+        return NextResponse.json({ levels: finalLevels, categories });
     } catch (error: any) {
         console.error('GET /api/grammar/options Error:', error);
         return NextResponse.json({

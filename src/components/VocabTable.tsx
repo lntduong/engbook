@@ -9,6 +9,20 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { useState } from 'react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface VocabItem {
     id: string;
@@ -25,9 +39,19 @@ interface VocabItem {
 interface VocabTableProps {
     data: VocabItem[];
     startIndex: number;
+    onDelete: (id: string) => void;
+    isAdmin?: boolean;
 }
 
-export default function VocabTable({ data, startIndex }: VocabTableProps) {
+export default function VocabTable({ data, startIndex, onDelete, isAdmin = false }: VocabTableProps) {
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const handleDelete = async (id: string) => {
+        setDeletingId(id);
+        await onDelete(id);
+        setDeletingId(null);
+    };
+
     return (
         <Card className="overflow-hidden border-slate-100 shadow-lg bg-white/90 backdrop-blur-sm">
             <Table>
@@ -39,6 +63,7 @@ export default function VocabTable({ data, startIndex }: VocabTableProps) {
                         <TableHead className="text-slate-600 font-semibold">Meaning</TableHead>
                         <TableHead className="text-slate-600 font-semibold">Level</TableHead>
                         <TableHead className="text-slate-600 font-semibold">Lesson</TableHead>
+                        {isAdmin && <TableHead className="w-16 text-slate-600 font-semibold">Actions</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -86,11 +111,46 @@ export default function VocabTable({ data, startIndex }: VocabTableProps) {
                                 <TableCell className="text-slate-600 text-sm">
                                     {item.lesson || <span className="text-slate-300">—</span>}
                                 </TableCell>
+                                {isAdmin && (
+                                    <TableCell>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                    disabled={deletingId === item.id}
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete the word
+                                                        <span className="font-bold text-slate-900"> "{item.word}" </span>
+                                                        from your vocabulary list.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                        onClick={() => handleDelete(item.id)}
+                                                        className="bg-red-600 hover:bg-red-700"
+                                                    >
+                                                        Delete
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </TableCell>
+                                )}
                             </TableRow>
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={6} className="h-32 text-center text-slate-400">
+                            <TableCell colSpan={isAdmin ? 7 : 6} className="h-32 text-center text-slate-400">
                                 <div className="flex flex-col items-center justify-center gap-2">
                                     <p className="text-lg font-medium text-slate-600">No vocabulary found</p>
                                     <p className="text-sm">Try adjusting your search or add a new word.</p>

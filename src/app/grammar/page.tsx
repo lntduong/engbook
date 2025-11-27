@@ -55,6 +55,22 @@ export default function GrammarPage() {
         await fetchGrammar();
     };
 
+    const handleDeleteGrammar = async (id: string) => {
+        try {
+            const res = await fetch(`/api/grammar/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                setGrammarList(grammarList.filter(item => item.id !== id));
+            } else {
+                console.error('Failed to delete grammar item');
+            }
+        } catch (error) {
+            console.error('Error deleting grammar item:', error);
+        }
+    };
+
     // Filter by level
     const filteredList = selectedLevel === 'ALL'
         ? grammarList
@@ -107,7 +123,11 @@ export default function GrammarPage() {
 
                     {/* Grammar List */}
                     <div className="flex-1 min-w-0">
-                        <GrammarList grammarList={filteredList} />
+                        <GrammarList
+                            grammarList={filteredList}
+                            onDelete={handleDeleteGrammar}
+                            isAdmin={isAdmin}
+                        />
                     </div>
                 </div>
 

@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: engbook-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: engbook_admin
+      POSTGRES_PASSWORD: YOUR_STRONG_PASSWORD # Change this!
+      POSTGRES_DB: engbook_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # Expose to NAS localhost
+    networks:
+      - engbook-net
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: engbook-tunnel
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=YOUR_TUNNEL_TOKEN # Get this from Cloudflare Dashboard
+    networks:
+      - engbook-net
+
+networks:
+  engbook-net:
+    driver: bridge

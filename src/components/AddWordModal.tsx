@@ -37,6 +37,8 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
     });
     const [levelOptions, setLevelOptions] = useState<string[]>([]);
     const [typeOptions, setTypeOptions] = useState<string[]>([]);
+    const [isCustomType, setIsCustomType] = useState(false);
+    const [customType, setCustomType] = useState('');
 
     useEffect(() => {
         // Fetch options from API
@@ -52,22 +54,30 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const finalType = isCustomType ? customType : formData.type;
+
         try {
             const res = await fetch('/api/vocab', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    type: finalType
+                }),
             });
 
             if (res.ok) {
                 onAdd({
                     ...formData,
+                    type: finalType,
                     id: 'temp-id', // Will be replaced by re-fetch
                     dateAdded: Date.now()
                 });
                 setFormData({ word: '', ipa: '', meaning: '', type: 'noun', level: 'A1', lesson: '', example: '' }); // Reset
+                setIsCustomType(false);
+                setCustomType('');
                 onClose();
             } else {
                 console.error('Failed to add word');
@@ -123,21 +133,41 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="type" className="text-slate-700 font-semibold">Type</Label>
-                            <Select
-                                value={formData.type}
-                                onValueChange={(val) => setFormData({ ...formData, type: val })}
-                            >
-                                <SelectTrigger className="border-slate-200">
-                                    <SelectValue placeholder="Select type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {typeOptions.map(type => (
-                                        <SelectItem key={type} value={type}>
-                                            {type.charAt(0).toUpperCase() + type.slice(1)}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="space-y-2">
+                                <Select
+                                    value={isCustomType ? 'other' : formData.type}
+                                    onValueChange={(val) => {
+                                        if (val === 'other') {
+                                            setIsCustomType(true);
+                                            setFormData({ ...formData, type: '' });
+                                        } else {
+                                            setIsCustomType(false);
+                                            setFormData({ ...formData, type: val });
+                                        }
+                                    }}
+                                >
+                                    <SelectTrigger className="border-slate-200">
+                                        <SelectValue placeholder="Select type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {typeOptions.map(type => (
+                                            <SelectItem key={type} value={type}>
+                                                {type.charAt(0).toUpperCase() + type.slice(1)}
+                                            </SelectItem>
+                                        ))}
+                                        <SelectItem value="other">Other...</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {isCustomType && (
+                                    <Input
+                                        placeholder="Enter new type"
+                                        value={customType}
+                                        onChange={(e) => setCustomType(e.target.value)}
+                                        className="border-slate-200"
+                                        required
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
 

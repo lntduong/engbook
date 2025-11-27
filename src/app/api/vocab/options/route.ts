@@ -1,31 +1,29 @@
 import { NextResponse } from 'next/server';
-
-const databaseId = process.env.NOTION_DATABASE_ID;
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
     try {
-        // Fetch database schema to get select options
-        const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-                'Notion-Version': '2022-06-28',
-            },
+        const distinctLevels = await prisma.vocabulary.findMany({
+            distinct: ['level'],
+            select: { level: true },
+            orderBy: { level: 'asc' },
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const distinctTypes = await prisma.vocabulary.findMany({
+            distinct: ['type'],
+            select: { type: true },
+            orderBy: { type: 'asc' },
+        });
 
-        const database = await response.json();
+        const levels = distinctLevels.map(i => i.level).filter(Boolean);
+        const types = distinctTypes.map(i => i.type).filter(Boolean);
 
-        // Extract Level and Type options
-        const levelOptions = database.properties?.['Level']?.select?.options?.map((opt: any) => opt.name) || [];
-        const typeOptions = database.properties?.['Type']?.select?.options?.map((opt: any) => opt.name) || [];
+        const standardLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        const finalLevels = Array.from(new Set([...standardLevels, ...levels])).sort();
 
         return NextResponse.json({
-            levels: levelOptions,
-            types: typeOptions,
+            levels: finalLevels,
+            types: types,
         });
     } catch (error) {
         console.error('Error fetching options:', error);

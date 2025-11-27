@@ -56,6 +56,22 @@ export default function ListeningPage() {
         await fetchEpisodes();
     };
 
+    const handleDeleteEpisode = async (id: string) => {
+        try {
+            const res = await fetch(`/api/listening/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                setEpisodes(episodes.filter(ep => ep.id !== id));
+            } else {
+                console.error('Failed to delete episode');
+            }
+        } catch (error) {
+            console.error('Error deleting episode:', error);
+        }
+    };
+
     const handleEpisodePlay = (episodeId: string) => {
         // Set this episode as currently playing (pauses others)
         setCurrentlyPlaying(episodeId);
@@ -117,6 +133,8 @@ export default function ListeningPage() {
                             episodes={filteredEpisodes}
                             currentlyPlaying={currentlyPlaying}
                             onEpisodePlay={handleEpisodePlay}
+                            onDelete={handleDeleteEpisode}
+                            isAdmin={isAdmin}
                         />
                     </div>
                 </div>

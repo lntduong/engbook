@@ -1,31 +1,25 @@
 import { NextResponse } from 'next/server';
-
-const notesDatabaseId = process.env.NOTION_NOTES_DATABASE_ID || '';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
     try {
-        const response = await fetch(
-            `https://api.notion.com/v1/databases/${notesDatabaseId}`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-                    'Notion-Version': '2022-06-28',
-                },
-            }
-        );
+        const distinctCategories = await prisma.note.findMany({
+            distinct: ['category'],
+            select: { category: true },
+            orderBy: { category: 'asc' },
+        });
 
-        if (!response.ok) {
-            throw new Error(`Notion API error: ${response.status}`);
-        }
+        // For tags, we need to fetch all and flatten since they are arrays
+        const allNotes = await prisma.note.findMany({
+            select: { tags: true },
+        });
 
-        const database = await response.json();
-        const properties = database.properties;
+        const categories = distinctCategories.map(i => i.category).filter(Boolean);
 
-        // Extract select options for Category and Tags
-        const categories = properties.Category?.select?.options?.map((opt: any) => opt.name) || [];
-        const tags = properties.Tags?.multi_select?.options?.map((opt: any) => opt.name) || [];
+        const allTags = allNotes.flatMap(note => note.tags);
+        const uniqueTags = Array.from(new Set(allTags)).sort();
 
-        return NextResponse.json({ categories, tags });
+        return NextResponse.json({ categories, tags: uniqueTags });
     } catch (error: any) {
         console.error('GET /api/notes/options Error:', error);
         return NextResponse.json({
