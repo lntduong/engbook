@@ -51,6 +51,29 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
             .catch(err => console.error('Failed to fetch options:', err));
     }, []);
 
+    // Auto-generate IPA
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (formData.word && !formData.ipa) {
+                try {
+                    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${formData.word}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        const phonetics = data[0]?.phonetics;
+                        const ipa = phonetics?.find((p: any) => p.text)?.text;
+                        if (ipa) {
+                            setFormData(prev => ({ ...prev, ipa }));
+                        }
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch IPA:', error);
+                }
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [formData.word, formData.ipa]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
