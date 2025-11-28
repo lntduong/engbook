@@ -53,17 +53,51 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
 
     // Auto-generate IPA
     useEffect(() => {
+        if (!formData.word.trim()) {
+            if (formData.ipa) {
+                setFormData(prev => ({ ...prev, ipa: '' }));
+            }
+            return;
+        }
+
         const timer = setTimeout(async () => {
             if (formData.word && !formData.ipa) {
                 try {
-                    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${formData.word}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        const phonetics = data[0]?.phonetics;
-                        const ipa = phonetics?.find((p: any) => p.text)?.text;
-                        if (ipa) {
-                            setFormData(prev => ({ ...prev, ipa }));
+                    const fetchIPA = async (text: string) => {
+                        try {
+                            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${text}`);
+                            if (res.ok) {
+                                const data = await res.json();
+                                const phonetics = data[0]?.phonetics;
+                                return phonetics?.find((p: any) => p.text)?.text;
+                            }
+                        } catch (e) {
+                            // Ignore errors for individual words
                         }
+                        return null;
+                    };
+
+                    let ipa = await fetchIPA(formData.word);
+
+                    // Fallback for phrases
+                    if (!ipa && formData.word.trim().includes(' ')) {
+                        const words = formData.word.trim().split(/\s+/);
+                        if (words.length > 1) {
+                            const ipas = await Promise.all(words.map(w => fetchIPA(w)));
+                            // If we found at least one IPA, combine them
+                            if (ipas.some(i => i)) {
+                                // Strip slashes from individual IPAs and combine
+                                const cleanIpas = ipas.map((p, i) => {
+                                    const text = p || words[i];
+                                    return text.replace(/^\/|\/$/g, '');
+                                });
+                                ipa = `/${cleanIpas.join(' ')}/`;
+                            }
+                        }
+                    }
+
+                    if (ipa) {
+                        setFormData(prev => ({ ...prev, ipa }));
                     }
                 } catch (error) {
                     console.error('Failed to fetch IPA:', error);
