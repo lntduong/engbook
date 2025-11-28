@@ -53,13 +53,6 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
 
     // Auto-generate IPA
     useEffect(() => {
-        if (!formData.word.trim()) {
-            if (formData.ipa) {
-                setFormData(prev => ({ ...prev, ipa: '' }));
-            }
-            return;
-        }
-
         const timer = setTimeout(async () => {
             if (formData.word && !formData.ipa) {
                 try {
@@ -166,7 +159,14 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                             <Input
                                 id="word"
                                 value={formData.word}
-                                onChange={(e) => setFormData({ ...formData, word: e.target.value })}
+                                onChange={(e) => {
+                                    const newWord = e.target.value;
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        word: newWord,
+                                        ipa: newWord.trim() ? prev.ipa : ''
+                                    }));
+                                }}
                                 placeholder="e.g. Serendipity"
                                 className="pl-10 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                                 required
