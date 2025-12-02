@@ -105,3 +105,36 @@ export async function deleteNote(noteId: string): Promise<void> {
         throw error;
     }
 }
+
+export async function getRelatedNotes(noteId: string, tags: string[], limit: number = 3): Promise<Note[]> {
+    if (!tags || tags.length === 0) return [];
+
+    try {
+        const items = await prisma.note.findMany({
+            where: {
+                id: { not: noteId },
+                tags: { hasSome: tags },
+            },
+            take: limit,
+            orderBy: { dateCreated: 'desc' },
+        });
+
+        return items.map(item => ({
+            id: item.id,
+            title: item.title,
+            content: item.content,
+            category: item.category || undefined,
+            tags: item.tags,
+            order: item.order,
+            dateCreated: item.dateCreated.getTime(),
+            lastEdited: item.lastEdited.getTime(),
+        })).sort((a, b) => {
+            const aMatches = (a.tags || []).filter(t => tags.includes(t)).length;
+            const bMatches = (b.tags || []).filter(t => tags.includes(t)).length;
+            return bMatches - aMatches;
+        });
+    } catch (error) {
+        console.error('[notes.ts] Error fetching related notes:', error);
+        return [];
+    }
+}

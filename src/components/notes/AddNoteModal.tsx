@@ -9,6 +9,12 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(() => import('@/components/ui/RichTextEditor'), {
+    ssr: false,
+    loading: () => <div className="h-64 w-full border border-gray-300 rounded-lg bg-gray-50 animate-pulse" />
+});
 
 interface AddNoteModalProps {
     isOpen: boolean;
@@ -41,8 +47,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, categories = [],
         setError('');
     }, [editingNote, isOpen]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         setError('');
 
         console.log('Submitting note:', { title, content, category, tags });
@@ -75,14 +80,14 @@ export default function AddNoteModal({ isOpen, onClose, onSave, categories = [],
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">
                         {editingNote ? 'Edit Note' : '📝 Add New Lesson Note'}
                     </DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+                <div className="space-y-6 mt-4">
                     {error && (
                         <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
                             {error}
@@ -106,16 +111,19 @@ export default function AddNoteModal({ isOpen, onClose, onSave, categories = [],
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Category
                         </label>
-                        <select
+                        <input
+                            type="text"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                        >
-                            <option value="">Select category...</option>
+                            list="categories-list"
+                            placeholder="Select or type category..."
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <datalist id="categories-list">
                             {categories.map((cat) => (
-                                <option key={cat} value={cat}>{cat}</option>
+                                <option key={cat} value={cat} />
                             ))}
-                        </select>
+                        </datalist>
                     </div>
 
                     <div>
@@ -140,12 +148,10 @@ export default function AddNoteModal({ isOpen, onClose, onSave, categories = [],
                             onChange={setContent}
                             placeholder="Start writing your lesson notes..."
                         /> */}
-                        <textarea
+                        <RichTextEditor
                             value={content}
-                            onChange={(e) => setContent(e.target.value)}
+                            onChange={setContent}
                             placeholder="Start writing your lesson notes..."
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-64"
-                            required
                         />
                     </div>
 
@@ -157,11 +163,11 @@ export default function AddNoteModal({ isOpen, onClose, onSave, categories = [],
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                        <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
                             {editingNote ? 'Update Note' : 'Save Note'}
                         </Button>
                     </div>
-                </form>
+                </div>
             </DialogContent>
         </Dialog>
     );

@@ -1,0 +1,91 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { BlockNoteView } from '@blocknote/shadcn';
+import { useCreateBlockNote } from '@blocknote/react';
+import '@blocknote/shadcn/style.css';
+
+interface RichTextEditorProps {
+    value: string;
+    onChange: (content: string) => void;
+    placeholder?: string;
+}
+
+export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
+    const editor = useCreateBlockNote({
+        uploadFile: async (file: File) => {
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+
+                const data = await response.json();
+                return data.url;
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                return URL.createObjectURL(file); // Fallback to blob URL
+            }
+        },
+    });
+
+    // Expose editor to window for debugging
+    useEffect(() => {
+        if (editor) {
+            // @ts-ignore
+            window.editor = editor;
+        }
+    }, [editor]);
+    const [initialContentLoaded, setInitialContentLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!editor || initialContentLoaded) return;
+
+        const loadContent = async () => {
+            if (value) {
+                try {
+                    if (value.trim().startsWith('[')) {
+                        const blocks = JSON.parse(value);
+                        editor.replaceBlocks(editor.document, blocks);
+                    } else {
+                        const blocks = await editor.tryParseHTMLToBlocks(value);
+                        editor.replaceBlocks(editor.document, blocks);
+                    }
+                } catch (e) {
+                    console.error("Error parsing content:", e);
+                    // Fallback to HTML parsing if JSON fails
+                    const blocks = await editor.tryParseHTMLToBlocks(value);
+                    editor.replaceBlocks(editor.document, blocks);
+                }
+            }
+            setInitialContentLoaded(true);
+        };
+
+        loadContent();
+    }, [editor, value, initialContentLoaded]);
+
+    const handleChange = async () => {
+        if (editor) {
+            // Save as JSON blocks for better fidelity
+            const json = JSON.stringify(editor.document);
+            onChange(json);
+        }
+    };
+
+    if (!editor) {
+        return <div>Loading editor...</div>;
+    }
+
+    return (
+        <div className="border border-gray-300 rounded-lg overflow-hidden bg-white relative flex flex-col h-full min-h-[300px]">
+            <BlockNoteView editor={editor} onChange={handleChange} theme="light" />
+        </div>
+    );
+}

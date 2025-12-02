@@ -16,14 +16,7 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
     const isAdmin = session?.user?.role === 'ADMIN';
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
-    // Strip HTML tags for preview
-    const stripHtml = (html: string) => {
-        const tmp = document.createElement('DIV');
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || '';
-    };
 
-    const preview = stripHtml(note.content).substring(0, 150) + (note.content.length > 150 ? '...' : '');
     const dateStr = new Date(note.lastEdited).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
@@ -71,10 +64,16 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
                     </div>
                 )}
 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{preview}</p>
 
-                <div className="flex items-center justify-between text-xs text-gray-400">
-                    <span>Last edited: {dateStr}</span>
+
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <span className="text-xs text-gray-400">Last edited: {dateStr}</span>
+                    <a
+                        href={`/notes/${note.id}`}
+                        className="text-indigo-600 hover:text-indigo-700 text-sm font-medium flex items-center gap-1 hover:underline"
+                    >
+                        View Details →
+                    </a>
                 </div>
             </div>
 
