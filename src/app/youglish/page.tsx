@@ -4,9 +4,11 @@ import { useState } from 'react';
 import YouGlishWidget from '@/components/YouGlishWidget';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from 'lucide-react';
+import { Search, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function YouGlishPage() {
+    const router = useRouter();
     const [input, setInput] = useState('');
     const [query, setQuery] = useState('');
 
@@ -19,9 +21,20 @@ export default function YouGlishPage() {
 
     return (
         <div className="container mx-auto py-8 px-4 max-w-4xl">
-            <h1 className="text-3xl font-bold text-center mb-8 text-slate-800">
-                YouGlish Pronunciation Search
-            </h1>
+            <div className="flex items-center gap-4 mb-8">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => router.push('/')}
+                    className="hover:bg-slate-100"
+                >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back
+                </Button>
+                <h1 className="text-3xl font-bold text-slate-800">
+                    YouGlish Pronunciation Search
+                </h1>
+            </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-slate-100">
                 <form onSubmit={handleSearch} className="flex gap-4">

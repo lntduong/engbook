@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BookOpen, GraduationCap, PenTool, Library, StickyNote, FileText, Book, Menu, X, LogIn, LogOut, Shield, User, Video, ChevronDown } from 'lucide-react';
+import { BookOpen, Menu, X, LogIn, LogOut, Shield, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
@@ -26,44 +26,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden sm:flex space-x-1">
-            <Button variant="ghost" asChild className="text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600 transition-all">
-              <Link href="/">
-                <Library className="w-4 h-4 mr-2" /> Vocabulary
-              </Link>
-            </Button>
-            <Button variant="ghost" asChild className="text-sm font-medium text-slate-600 hover:bg-slate-100/50 hover:text-blue-600 transition-all">
-              <Link href="/grammar">
-                <GraduationCap className="w-4 h-4 mr-2" /> Grammar
-              </Link>
-            </Button>
-            <Button variant="ghost" asChild className="text-sm font-medium text-slate-600 hover:bg-slate-100/50 hover:text-blue-600 transition-all">
-              <Link href="/listening">
-                <PenTool className="w-4 h-4 mr-2" /> Listening
-              </Link>
-            </Button>
-
-            {/* More Dropdown */}
-            <div className="relative group">
-              <Button variant="ghost" className="text-sm font-medium text-slate-600 hover:bg-slate-100/50 hover:text-blue-600 transition-all">
-                More <ChevronDown className="w-4 h-4 ml-1" />
-              </Button>
-              <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
-                <Link href="/flashcard" className="flex items-center px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-blue-600">
-                  <StickyNote className="w-4 h-4 mr-2" /> Flashcard
-                </Link>
-                <Link href="/notes" className="flex items-center px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-blue-600">
-                  <FileText className="w-4 h-4 mr-2" /> Notes
-                </Link>
-                <Link href="/exercises" className="flex items-center px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-blue-600">
-                  <Book className="w-4 h-4 mr-2" /> Exercises
-                </Link>
-                <Link href="/youglish" className="flex items-center px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-blue-600">
-                  <Video className="w-4 h-4 mr-2" /> YouGlish
-                </Link>
-              </div>
-            </div>
-          </nav>
+          {/* Desktop Navigation Removed */}
 
           {/* Mobile Menu Button */}
           <Button
@@ -120,41 +83,7 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="sm:hidden border-t border-slate-200 py-2 bg-white/95">
             <nav className="flex flex-col space-y-1">
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                  <Library className="w-4 h-4 mr-2" /> Vocabulary
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/grammar" onClick={() => setMobileMenuOpen(false)}>
-                  <GraduationCap className="w-4 h-4 mr-2" /> Grammar
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/listening" onClick={() => setMobileMenuOpen(false)}>
-                  <PenTool className="w-4 h-4 mr-2" /> Listening
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/flashcard" onClick={() => setMobileMenuOpen(false)}>
-                  <StickyNote className="w-4 h-4 mr-2" /> Flashcard
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/notes" onClick={() => setMobileMenuOpen(false)}>
-                  <FileText className="w-4 h-4 mr-2" /> Notes
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/exercises" onClick={() => setMobileMenuOpen(false)}>
-                  <Book className="w-4 h-4 mr-2" /> Exercises
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="justify-start text-sm font-medium hover:bg-slate-100/50 hover:text-blue-600">
-                <Link href="/youglish" onClick={() => setMobileMenuOpen(false)}>
-                  <Video className="w-4 h-4 mr-2" /> YouGlish
-                </Link>
-              </Button>
+              {/* Mobile Navigation Links Removed */}
 
               {/* Mobile Auth */}
               <div className="border-t border-slate-200 pt-2 mt-2">

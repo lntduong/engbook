@@ -1,139 +1,100 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import FilterBar from '@/components/FilterBar';
-import VocabTable from '@/components/VocabTable';
-import AddWordModal from '@/components/AddWordModal';
-import { Button } from "@/components/ui/button";
-import { Plus } from 'lucide-react';
+import { FeatureCard } from '@/components/dashboard/FeatureCard';
+import {
+  BookA,
+  GraduationCap,
+  NotebookPen,
+  Dumbbell,
+  Youtube,
+  Layers,
+  Languages
+} from 'lucide-react';
 
-interface VocabItem {
-  id: string;
-  word: string;
-  ipa: string;
-  meaning: string;
-  level: string;
-  type?: string;
-  lesson?: string;
-  example?: string;
-  dateAdded: number;
-}
-
-export default function Home() {
+export default function Dashboard() {
   const { data: session } = useSession();
-  const isAdmin = session?.user?.role === 'ADMIN';
+  const userName = session?.user?.name || 'Learner';
 
-  const [vocabList, setVocabList] = useState<VocabItem[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [levelFilter, setLevelFilter] = useState('ALL');
-  const [lessonFilter, setLessonFilter] = useState('ALL');
-  const [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    fetchVocab();
-  }, []);
-
-  const fetchVocab = async () => {
-    try {
-      const res = await fetch('/api/vocab');
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setVocabList(data);
-      }
-    } catch (error) {
-      console.error('[page.tsx] Failed to fetch vocab:', error);
-    }
-  };
-
-  const handleAddWord = async (newWord: VocabItem) => {
-    // Optimistic update
-    setVocabList([newWord, ...vocabList]);
-
-    // Wait a bit for Notion to finish saving, then re-fetch to get the real data
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    await fetchVocab();
-  };
-
-  const handleDeleteWord = async (id: string) => {
-    try {
-      const res = await fetch(`/api/vocab/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (res.ok) {
-        setVocabList(vocabList.filter(item => item.id !== id));
-      } else {
-        console.error('Failed to delete word');
-      }
-    } catch (error) {
-      console.error('Error deleting word:', error);
-    }
-  };
-
-  // Extract unique lessons
-  const lessonOptions = Array.from(new Set(vocabList.map(item => item.lesson).filter(Boolean))) as string[];
-
-  const filteredList = vocabList.filter(item => {
-    const matchesSearch = item.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.meaning.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.ipa.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = levelFilter === 'ALL' || item.level === levelFilter;
-    const matchesLesson = lessonFilter === 'ALL' || item.lesson === lessonFilter;
-    return matchesSearch && matchesLevel && matchesLesson;
-  });
-
-  const totalPages = Math.ceil(filteredList.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const currentData = filteredList.slice(startIndex, startIndex + pageSize);
+  const features = [
+    {
+      icon: BookA,
+      title: "Vocabulary",
+      description: "Manage your personal dictionary. Track words, IPA, and meanings.",
+      href: "/vocab",
+      color: "text-blue-600",
+    },
+    {
+      icon: GraduationCap,
+      title: "Grammar",
+      description: "Master English grammar rules with structured lessons and examples.",
+      href: "/grammar",
+      color: "text-purple-600",
+    },
+    {
+      icon: Youtube,
+      title: "Pronunciation",
+      description: "Improve your speaking with YouGlish video examples.",
+      href: "/youglish", // Assuming this route exists based on history
+      color: "text-red-600",
+    },
+    {
+      icon: Layers,
+      title: "Flashcards",
+      description: "Review your vocabulary with interactive flashcards.",
+      href: "/flashcard", // As per history
+      color: "text-indigo-600",
+    },
+    {
+      icon: NotebookPen,
+      title: "Notes",
+      description: "Your personal notebook for free-text study notes.",
+      href: "/notes",
+      color: "text-yellow-600",
+    },
+    {
+      icon: Dumbbell,
+      title: "Exercises",
+      description: "Practice what you've learned with quizzes and matching games.",
+      href: "/exercises",
+      color: "text-green-600",
+    },
+    {
+      icon: Languages,
+      title: "Translator",
+      description: "Quickly translate words and sentences between languages.",
+      href: "/translate",
+      color: "text-orange-600",
+    },
+  ];
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Vocabulary Box</h1>
-            <p className="text-slate-500 mt-1">Manage and track your English vocabulary journey.</p>
-          </div>
-          {isAdmin && (
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-lg shadow-blue-600/20 transition-all hover:scale-105"
-            >
-              <Plus className="w-4 h-4 mr-2" /> Add Word
-            </Button>
-          )}
+    <div className="min-h-screen bg-slate-50/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        {/* Header Section */}
+        <div className="text-center mb-16 space-y-4">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+            ENG NOTEBOOK
+          </h1>
+          <p className="text-xl text-slate-500 font-medium">
+            Hi, {userName}! Ready to learn something new today?
+          </p>
         </div>
 
-        <FilterBar
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          levelFilter={levelFilter}
-          onLevelFilterChange={setLevelFilter}
-          lessonFilter={lessonFilter}
-          onLessonFilterChange={setLessonFilter}
-          lessonOptions={lessonOptions}
-          pageSize={pageSize}
-          onPageSizeChange={setPageSize}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-
-        <VocabTable
-          data={currentData}
-          startIndex={startIndex}
-          onDelete={handleDeleteWord}
-          isAdmin={isAdmin}
-        />
-
-        <AddWordModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onAdd={handleAddWord}
-        />
+        {/* Grid Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+              href={feature.href}
+              color={feature.color}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
