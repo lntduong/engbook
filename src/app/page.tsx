@@ -9,7 +9,8 @@ import {
   Dumbbell,
   Youtube,
   Layers,
-  Languages
+  Languages,
+  Headphones
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -58,6 +59,13 @@ export default function Dashboard() {
       description: "Practice what you've learned with quizzes and matching games.",
       href: "/exercises",
       color: "text-green-600",
+    },
+    {
+      icon: Headphones,
+      title: "Listening",
+      description: "Practice listening with audio lessons and transcripts.",
+      href: "/listening",
+      color: "text-cyan-600",
     },
     {
       icon: Languages,
