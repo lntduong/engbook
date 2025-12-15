@@ -6,9 +6,14 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id } = await params;
+        const resolvedParams = await params;
+        console.log('GET /api/notes/[id] - Params:', resolvedParams);
+        const { id } = resolvedParams;
+        console.log('GET /api/notes/[id] - Fetching ID:', id);
+
         const note = await getNoteById(id);
         if (!note) {
+            console.log('GET /api/notes/[id] - Note not found for ID:', id);
             return NextResponse.json({
                 error: 'Note not found'
             }, { status: 404 });
@@ -19,6 +24,7 @@ export async function GET(
         return NextResponse.json({
             error: 'Failed to fetch note',
             message: error.message,
+            stack: error.stack,
         }, { status: 500 });
     }
 }

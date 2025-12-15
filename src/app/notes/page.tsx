@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { Note } from '@/lib/notes';
 import { useRouter } from 'next/navigation';
 import NotesList from '@/components/notes/NotesList';
-import AddNoteModal from '@/components/notes/AddNoteModal';
 import { Button } from '@/components/ui/button';
 import {
     Select,
@@ -22,8 +21,6 @@ export default function NotesPage() {
     const isAdmin = session?.user?.role === 'ADMIN';
     const [notes, setNotes] = useState<Note[]>([]);
     const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingNote, setEditingNote] = useState<Note | null>(null);
     const [categories, setCategories] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -61,43 +58,6 @@ export default function NotesPage() {
         }
     };
 
-    const handleSaveNote = async (noteData: Omit<Note, 'id' | 'dateCreated' | 'lastEdited'>) => {
-        try {
-            if (editingNote) {
-                // Update existing note
-                const response = await fetch(`/api/notes/${editingNote.id}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: noteData.title,
-                        content: noteData.content,
-                        category: noteData.category,
-                        tags: noteData.tags
-                    }),
-                });
-
-                if (!response.ok) throw new Error('Failed to update note');
-            } else {
-                // Create new note
-                const response = await fetch('/api/notes', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(noteData),
-                });
-
-                if (!response.ok) throw new Error('Failed to create note');
-            }
-
-            // Refresh list
-            await fetchNotes();
-            setIsModalOpen(false);
-            setEditingNote(null);
-        } catch (error) {
-            console.error('Error saving note:', error);
-            alert('Failed to save note. Please try again.');
-        }
-    };
-
     const handleDeleteNote = async (id: string) => {
         try {
             const response = await fetch(`/api/notes/${id}`, {
@@ -115,13 +75,11 @@ export default function NotesPage() {
     };
 
     const handleEditClick = (note: Note) => {
-        setEditingNote(note);
-        setIsModalOpen(true);
+        router.push(`/notes/${note.id}/edit`);
     };
 
     const handleAddNewClick = () => {
-        setEditingNote(null);
-        setIsModalOpen(true);
+        router.push('/notes/new');
     };
 
     // Filter logic
@@ -211,14 +169,6 @@ export default function NotesPage() {
                         onDelete={handleDeleteNote}
                     />
                 )}
-
-                <AddNoteModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    onSave={handleSaveNote}
-                    categories={categories}
-                    editingNote={editingNote}
-                />
             </main>
         </div>
     );

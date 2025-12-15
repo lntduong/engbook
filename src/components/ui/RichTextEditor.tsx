@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BlockNoteView } from '@blocknote/shadcn';
 import { useCreateBlockNote } from '@blocknote/react';
 import '@blocknote/shadcn/style.css';
+import ErrorBoundary from './ErrorBoundary';
 
 interface RichTextEditorProps {
     value: string;
@@ -31,7 +32,12 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
                 return data.url;
             } catch (error) {
                 console.error('Error uploading file:', error);
-                return URL.createObjectURL(file); // Fallback to blob URL
+                // Fallback to Base64 Data URL for persistence if upload fails
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result as string);
+                    reader.readAsDataURL(file);
+                });
             }
         },
     });
@@ -85,7 +91,9 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
 
     return (
         <div className="border border-gray-300 rounded-lg overflow-hidden bg-white relative flex flex-col h-full min-h-[300px]">
-            <BlockNoteView editor={editor} onChange={handleChange} theme="light" />
+            <ErrorBoundary fallback={<div className="p-4 text-red-500">Error loading editor content. Please try refreshing.</div>}>
+                <BlockNoteView editor={editor} onChange={handleChange} theme="light" />
+            </ErrorBoundary>
         </div>
     );
 }

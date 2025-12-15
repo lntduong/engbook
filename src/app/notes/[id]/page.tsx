@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button';
 import NoteCard from '@/components/notes/NoteCard';
 import dynamic from 'next/dynamic';
 import '@blocknote/shadcn/style.css';
-import { useCreateBlockNote } from '@blocknote/react';
-import { BlockNoteView } from '@blocknote/shadcn';
 
-// Import BlockNote viewer dynamically to avoid SSR issues if needed, but try standard first
-// const BlockNoteView = dynamic(() => import('@blocknote/shadcn').then(mod => mod.BlockNoteView), { ssr: false });
+
+const NoteViewer = dynamic(() => import('@/components/notes/NoteViewer'), {
+    ssr: false,
+    loading: () => <div className="animate-pulse h-20 bg-gray-100 rounded-lg"></div>
+});
 
 export default function NoteDetailPage() {
     const router = useRouter();
@@ -141,39 +142,4 @@ export default function NoteDetailPage() {
     );
 }
 
-// Separate component to handle BlockNote hooks
-function NoteViewer({ content }: { content: string }) {
-    const editor = useCreateBlockNote();
-    const [initialContentLoaded, setInitialContentLoaded] = useState(false);
 
-    useEffect(() => {
-        if (!editor || initialContentLoaded) return;
-
-        const loadContent = async () => {
-            if (content) {
-                try {
-                    // Check if content is JSON (starts with '[')
-                    if (content.trim().startsWith('[')) {
-                        const blocks = JSON.parse(content);
-                        editor.replaceBlocks(editor.document, blocks);
-                    } else {
-                        // Fallback for HTML content
-                        const blocks = await editor.tryParseHTMLToBlocks(content);
-                        editor.replaceBlocks(editor.document, blocks);
-                    }
-                } catch (e) {
-                    console.error("Error loading content:", e);
-                }
-            }
-            setInitialContentLoaded(true);
-        };
-
-        loadContent();
-    }, [editor, content, initialContentLoaded]);
-
-    if (!editor || !initialContentLoaded) {
-        return <div className="animate-pulse h-20 bg-gray-100 rounded-lg"></div>;
-    }
-
-    return <BlockNoteView editor={editor} editable={false} theme="light" />;
-}
