@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Plus, Type, Volume2, BookOpen, GraduationCap } from 'lucide-react';
+import { Plus, Type, Volume2, BookOpen, GraduationCap, Sparkles, Loader2 } from 'lucide-react';
 
 interface AddWordModalProps {
     isOpen: boolean;
@@ -36,6 +36,7 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
         example: ''
     });
     const [levelOptions, setLevelOptions] = useState<string[]>([]);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     useEffect(() => {
         // Fetch options from API
@@ -47,130 +48,127 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
             .catch(err => console.error('Failed to fetch options:', err));
     }, []);
 
-    // Auto-generate IPA, Example, and Type
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            if (formData.word) {
+    const handleAutoFill = async () => {
+        if (!formData.word) return;
+        setIsGenerating(true);
+
+        try {
+            const fetchWordData = async (text: string) => {
                 try {
-                    const fetchWordData = async (text: string) => {
-                        try {
-                            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${text}`);
-                            if (res.ok) {
-                                const data = await res.json();
-                                const entry = data[0];
-                                if (!entry) return null;
+                    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${text}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        const entry = data[0];
+                        if (!entry) return null;
 
-                                // IPA - try to find one with text
-                                const ipa = entry.phonetics?.find((p: any) => p.text && p.text.trim() !== '')?.text || entry.phonetics?.[0]?.text;
+                        // IPA - try to find one with text
+                        const ipa = entry.phonetics?.find((p: any) => p.text && p.text.trim() !== '')?.text || entry.phonetics?.[0]?.text;
 
-                                // Parsing meaning/example
-                                let example = '';
-                                let type = '';
+                        // Parsing meaning/example
+                        let example = '';
+                        let type = '';
 
-                                if (entry.meanings && Array.isArray(entry.meanings)) {
-                                    // Default type from first meaning if available
-                                    if (entry.meanings.length > 0) {
-                                        type = entry.meanings[0].partOfSpeech || '';
-                                    }
+                        if (entry.meanings && Array.isArray(entry.meanings)) {
+                            // Default type from first meaning if available
+                            if (entry.meanings.length > 0) {
+                                type = entry.meanings[0].partOfSpeech || '';
+                            }
 
-                                    // Find first definition with an example
-                                    for (const m of entry.meanings) {
-                                        if (m.definitions && Array.isArray(m.definitions)) {
-                                            for (const d of m.definitions) {
-                                                if (d.example) {
-                                                    example = d.example;
-                                                    break;
-                                                }
-                                            }
+                            // Find first definition with an example
+                            for (const m of entry.meanings) {
+                                if (m.definitions && Array.isArray(m.definitions)) {
+                                    for (const d of m.definitions) {
+                                        if (d.example) {
+                                            example = d.example;
+                                            break;
                                         }
-                                        if (example) break;
                                     }
                                 }
-
-                                return { ipa, example, type };
+                                if (example) break;
                             }
-                        } catch (e) {
-                            console.error(`Error fetching data for ${text}:`, e);
                         }
-                        return null;
-                    };
 
-                    // 1. Try fetching for the whole word/phrase
-                    const data = await fetchWordData(formData.word);
-                    let newIpa = data?.ipa;
-                    let newExample = data?.example;
-                    let newType = data?.type;
-                    let newMeaning = '';
-
-                    // 2. Fallback/Enhancement with Gemini AI
-                    // Always try to fetch AI to get Vietnamese meaning and better examples
-                    const shouldFetchAI = true;
-
-                    if (shouldFetchAI) {
-                        try {
-                            const aiRes = await fetch('/api/vocab/ai-generate', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ word: formData.word })
-                            });
-
-                            if (aiRes.ok) {
-                                const aiData = await aiRes.json();
-                                if (aiData) {
-                                    if (!newIpa) newIpa = aiData.ipa;
-                                    if (!newExample) newExample = aiData.example;
-                                    if (!newType || newType === 'noun') newType = aiData.type;
-                                    newMeaning = aiData.meaning;
-                                }
-                            }
-                        } catch (err) {
-                            console.error("AI Generation failed", err);
-                        }
+                        return { ipa, example, type };
                     }
+                } catch (e) {
+                    console.error(`Error fetching data for ${text}:`, e);
+                }
+                return null;
+            };
 
-                    // 3. Fallback IPA generation for phrases
-                    if (!newIpa && formData.word.trim().includes(' ')) {
-                        const words = formData.word.trim().split(/\s+/);
-                        if (words.length > 1) {
-                            const ipas = await Promise.all(words.map(async w => {
-                                const d = await fetchWordData(w);
-                                return d?.ipa;
-                            }));
+            // 1. Try fetching for the whole word/phrase
+            const data = await fetchWordData(formData.word);
+            let newIpa = data?.ipa;
+            let newExample = data?.example;
+            let newType = data?.type;
+            let newMeaning = '';
 
-                            if (ipas.some(i => i)) {
-                                const cleanIpas = ipas.map((p, i) => {
-                                    const text = p || words[i];
-                                    return text.replace(/^\/|\/$/g, '');
-                                });
-                                newIpa = `/${cleanIpas.join(' ')}/`;
-                            }
-                        }
-                    }
+            // 2. Fallback/Enhancement with Gemini AI
+            const shouldFetchAI = true;
 
-                    // Cleanup IPA formatting (ensure slashes)
-                    if (newIpa && !newIpa.startsWith('/')) newIpa = `/${newIpa}`;
-                    if (newIpa && !newIpa.endsWith('/')) newIpa = `${newIpa}/`;
-
-                    // 4. Update state
-                    setFormData(prev => {
-                        const updates: any = {};
-                        if (!prev.ipa && newIpa) updates.ipa = newIpa;
-                        if (!prev.example && newExample) updates.example = newExample;
-                        if (!prev.meaning && newMeaning) updates.meaning = newMeaning;
-                        // Always update type if we have a better one from AI/API
-                        if (newType && newType !== 'noun' && newType !== prev.type) updates.type = newType.toLowerCase();
-
-                        return Object.keys(updates).length > 0 ? { ...prev, ...updates } : prev;
+            if (shouldFetchAI) {
+                try {
+                    const aiRes = await fetch('/api/vocab/ai-generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ word: formData.word })
                     });
 
-                } catch (error) {
-                    console.error('Failed to auto-generate word data:', error);
+                    if (aiRes.ok) {
+                        const aiData = await aiRes.json();
+                        if (aiData) {
+                            if (!newIpa) newIpa = aiData.ipa;
+                            if (!newExample) newExample = aiData.example;
+                            if (!newType || newType === 'noun') newType = aiData.type;
+                            newMeaning = aiData.meaning;
+                        }
+                    }
+                } catch (err) {
+                    console.error("AI Generation failed", err);
                 }
             }
-        }, 800); // Increased debounce to 800ms to reduce requests
 
-        return () => clearTimeout(timer);
-    }, [formData.word]);
+            // 3. Fallback IPA generation for phrases
+            if (!newIpa && formData.word.trim().includes(' ')) {
+                const words = formData.word.trim().split(/\s+/);
+                if (words.length > 1) {
+                    const ipas = await Promise.all(words.map(async w => {
+                        const d = await fetchWordData(w);
+                        return d?.ipa;
+                    }));
+
+                    if (ipas.some(i => i)) {
+                        const cleanIpas = ipas.map((p, i) => {
+                            const text = p || words[i];
+                            return text.replace(/^\/|\/$/g, '');
+                        });
+                        newIpa = `/${cleanIpas.join(' ')}/`;
+                    }
+                }
+            }
+
+            // Cleanup IPA formatting (ensure slashes)
+            if (newIpa && !newIpa.startsWith('/')) newIpa = `/${newIpa}`;
+            if (newIpa && !newIpa.endsWith('/')) newIpa = `${newIpa}/`;
+
+            // 4. Update state
+            setFormData(prev => {
+                const updates: any = {};
+                if (!prev.ipa && newIpa) updates.ipa = newIpa;
+                if (!prev.example && newExample) updates.example = newExample;
+                if (!prev.meaning && newMeaning) updates.meaning = newMeaning;
+                // Always update type if we have a better one from AI/API
+                if (newType && newType !== 'noun' && newType !== prev.type) updates.type = newType.toLowerCase();
+
+                return Object.keys(updates).length > 0 ? { ...prev, ...updates } : prev;
+            });
+
+        } catch (error) {
+            console.error('Failed to auto-generate word data:', error);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -227,16 +225,28 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                                     setFormData(prev => ({
                                         ...prev,
                                         word: newWord,
-                                        ipa: newWord.trim() ? prev.ipa : '',
-                                        example: newWord.trim() ? prev.example : '',
-                                        meaning: newWord.trim() ? prev.meaning : '',
-                                        type: newWord.trim() ? prev.type : 'noun'
+                                        // Don't auto-clear fields, let user decide or manual fetch overwrite
                                     }));
                                 }}
                                 placeholder="e.g. Serendipity"
-                                className="pl-10 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
+                                className="pl-10 pr-12 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
                                 required
                             />
+                            <Button
+                                type="button"
+                                size="icon"
+                                variant="ghost"
+                                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                onClick={handleAutoFill}
+                                disabled={isGenerating || !formData.word}
+                                title="Auto-generate details with AI"
+                            >
+                                {isGenerating ? (
+                                    <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+                                ) : (
+                                    <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                )}
+                            </Button>
                         </div>
                     </div>
 

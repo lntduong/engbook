@@ -25,6 +25,7 @@ export default function Dashboard() {
       description: "Manage your personal dictionary. Track words, IPA, and meanings.",
       href: "/vocab",
       color: "text-blue-600",
+      gradient: "linear-gradient(135deg, #EFF6FF 0%, #BFDBFE 100%)",
     },
     {
       icon: GraduationCap,
@@ -32,6 +33,7 @@ export default function Dashboard() {
       description: "Master English grammar rules with structured lessons and examples.",
       href: "/grammar",
       color: "text-purple-600",
+      gradient: "linear-gradient(135deg, #FAF5FF 0%, #E9D5FF 100%)",
     },
     {
       icon: Youtube,
@@ -39,6 +41,7 @@ export default function Dashboard() {
       description: "Improve your speaking with YouGlish video examples.",
       href: "/youglish", // Assuming this route exists based on history
       color: "text-red-600",
+      gradient: "linear-gradient(135deg, #FFF7ED 0%, #FED7AA 100%)",
     },
     {
       icon: Layers,
@@ -46,6 +49,7 @@ export default function Dashboard() {
       description: "Review your vocabulary with interactive flashcards.",
       href: "/flashcard", // As per history
       color: "text-indigo-600",
+      gradient: "linear-gradient(135deg, #EEF2FF 0%, #C7D2FE 100%)",
     },
     {
       icon: NotebookPen,
@@ -53,6 +57,7 @@ export default function Dashboard() {
       description: "Your personal notebook for free-text study notes.",
       href: "/notes",
       color: "text-yellow-600",
+      gradient: "linear-gradient(135deg, #FEFCE8 0%, #FEF08A 100%)",
     },
     {
       icon: Dumbbell,
@@ -60,6 +65,7 @@ export default function Dashboard() {
       description: "Practice what you've learned with quizzes and matching games.",
       href: "/exercises",
       color: "text-green-600",
+      gradient: "linear-gradient(135deg, #F0FDF4 0%, #BBF7D0 100%)",
     },
     {
       icon: Headphones,
@@ -67,6 +73,7 @@ export default function Dashboard() {
       description: "Practice listening with audio lessons and transcripts.",
       href: "/listening",
       color: "text-cyan-600",
+      gradient: "linear-gradient(135deg, #ECFEFF 0%, #A5F3FC 100%)",
     },
     {
       icon: Languages,
@@ -74,6 +81,7 @@ export default function Dashboard() {
       description: "Quickly translate words and sentences between languages.",
       href: "/translate",
       color: "text-orange-600",
+      gradient: "linear-gradient(135deg, #FFF7ED 0%, #FED7AA 100%)",
     },
     {
       icon: FileQuestion,
@@ -81,6 +89,7 @@ export default function Dashboard() {
       description: "Test your knowledge with real exam questions and time limits.",
       href: "/exams",
       color: "text-rose-600",
+      gradient: "linear-gradient(135deg, #FAF5FF 0%, #E9D5FF 100%)",
     },
   ];
 
@@ -108,6 +117,7 @@ export default function Dashboard() {
               description={feature.description}
               href={feature.href}
               color={feature.color}
+              gradient={feature.gradient}
             />
           ))}
         </div>
