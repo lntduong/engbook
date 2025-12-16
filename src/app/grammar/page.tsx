@@ -92,8 +92,8 @@ export default function GrammarPage() {
                             Back
                         </Button>
                         <div className="min-w-0">
-                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight truncate">Grammar</h1>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 truncate">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight truncate">Grammar</h1>
+                            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
                                 {selectedLevel === 'ALL'
                                     ? 'All grammar topics'
                                     : `Topics: ${selectedLevel}`}

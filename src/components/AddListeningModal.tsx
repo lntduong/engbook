@@ -81,7 +81,7 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-slate-900">
+                    <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white">
                         Add Listening Episode
                     </DialogTitle>
                 </DialogHeader>
@@ -89,13 +89,13 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Title */}
                     <div>
-                        <Label htmlFor="title">Title *</Label>
+                        <Label htmlFor="title" className="text-slate-700 dark:text-slate-200">Title *</Label>
                         <Input
                             id="title"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             placeholder="e.g., Daily Conversation - Greeting"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                             required
                         />
                     </div>
@@ -103,9 +103,9 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                     {/* Level and Topic Row */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label htmlFor="level">Level *</Label>
+                            <Label htmlFor="level" className="text-slate-700 dark:text-slate-200">Level *</Label>
                             <Select value={formData.level} onValueChange={(val) => setFormData({ ...formData, level: val })}>
-                                <SelectTrigger className="mt-2">
+                                <SelectTrigger className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -117,9 +117,9 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
                         </div>
 
                         <div>
-                            <Label htmlFor="topic">Topic *</Label>
+                            <Label htmlFor="topic" className="text-slate-700 dark:text-slate-200">Topic *</Label>
                             <Select value={formData.topic} onValueChange={(val) => setFormData({ ...formData, topic: val })}>
-                                <SelectTrigger className="mt-2">
+                                <SelectTrigger className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                     <SelectValue placeholder="Select topic" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -133,40 +133,40 @@ export default function AddListeningModal({ isOpen, onClose, onAdd }: AddListeni
 
                     {/* Order */}
                     <div>
-                        <Label htmlFor="order">Order</Label>
+                        <Label htmlFor="order" className="text-slate-700 dark:text-slate-200">Order</Label>
                         <Input
                             id="order"
                             type="number"
                             value={formData.order}
                             onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
                             min="1"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 
                     {/* Audio URL */}
                     <div>
-                        <Label htmlFor="audioUrl">Audio URL *</Label>
+                        <Label htmlFor="audioUrl" className="text-slate-700 dark:text-slate-200">Audio URL *</Label>
                         <Input
                             id="audioUrl"
                             type="url"
                             value={formData.audioUrl}
                             onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
                             placeholder="https://example.com/audio.mp3"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                             required
                         />
                     </div>
 
                     {/* Duration */}
                     <div>
-                        <Label htmlFor="duration">Duration (optional)</Label>
+                        <Label htmlFor="duration" className="text-slate-700 dark:text-slate-200">Duration (optional)</Label>
                         <Input
                             id="duration"
                             value={formData.duration}
                             onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
                             placeholder="e.g., 2:15"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 

@@ -55,7 +55,7 @@ export default function FilterBar({
     }, []);
 
     return (
-        <Card className="p-3 sm:p-4 mb-4 sm:mb-6 shadow-lg border-slate-100 bg-white/95 backdrop-blur-sm sticky top-16 z-40">
+        <Card className="p-3 sm:p-4 mb-4 sm:mb-6 shadow-lg border-slate-100 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm sticky top-16 z-40">
             <div className="flex flex-col gap-3">
                 {/* Search + Filters Row */}
                 <div className="flex flex-col sm:flex-row gap-3 w-full">
@@ -65,7 +65,7 @@ export default function FilterBar({
                         <Input
                             type="text"
                             placeholder="Search vocabulary..."
-                            className="pl-10 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                            className="pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-900 transition-colors text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                             value={searchTerm}
                             onChange={(e) => onSearchChange(e.target.value)}
                         />
@@ -74,9 +74,9 @@ export default function FilterBar({
                     {/* Level Filter */}
                     <div className="w-full sm:w-auto sm:min-w-[140px]">
                         <Select value={levelFilter} onValueChange={onLevelFilterChange}>
-                            <SelectTrigger className="bg-slate-50 border-slate-200 w-full">
+                            <SelectTrigger className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 w-full text-slate-900 dark:text-slate-100">
                                 <div className="flex items-center gap-2">
-                                    <Filter className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                                    <Filter className="h-4 w-4 text-slate-500 dark:text-slate-400 flex-shrink-0" />
                                     <SelectValue placeholder="Level" />
                                 </div>
                             </SelectTrigger>
@@ -94,9 +94,9 @@ export default function FilterBar({
                     {/* Lesson Filter */}
                     <div className="w-full sm:w-auto sm:min-w-[140px]">
                         <Select value={lessonFilter} onValueChange={onLessonFilterChange}>
-                            <SelectTrigger className="bg-slate-50 border-slate-200 w-full">
+                            <SelectTrigger className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 w-full text-slate-900 dark:text-slate-100">
                                 <div className="flex items-center gap-2">
-                                    <BookOpen className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                                    <BookOpen className="h-4 w-4 text-slate-500 dark:text-slate-400 flex-shrink-0" />
                                     <SelectValue placeholder="Lesson" />
                                 </div>
                             </SelectTrigger>
@@ -115,9 +115,9 @@ export default function FilterBar({
                 {/* Pagination Row */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="text-sm text-slate-500 font-medium">Show:</span>
+                        <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">Show:</span>
                         <Select value={pageSize.toString()} onValueChange={(val) => onPageSizeChange(Number(val))}>
-                            <SelectTrigger className="w-[70px] h-9 bg-slate-50 border-slate-200">
+                            <SelectTrigger className="w-[70px] h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -128,17 +128,17 @@ export default function FilterBar({
                         </Select>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-slate-50 p-1 rounded-lg border border-slate-200 justify-center">
+                    <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 justify-center">
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => onPageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="h-8 px-2 sm:px-3 hover:bg-white hover:shadow-sm text-xs sm:text-sm"
+                            className="h-8 px-2 sm:px-3 hover:bg-white dark:hover:bg-slate-700 hover:shadow-sm text-xs sm:text-sm text-slate-600 dark:text-slate-300"
                         >
                             Previous
                         </Button>
-                        <span className="text-xs sm:text-sm font-medium text-slate-600 min-w-[3rem] text-center">
+                        <span className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 min-w-[3rem] text-center">
                             {currentPage} / {totalPages || 1}
                         </span>
                         <Button

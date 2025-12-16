@@ -57,7 +57,7 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
     };
 
     return (
-        <Card className="p-6 mb-4 bg-white/80 backdrop-blur-sm border-slate-200 hover:shadow-md transition-shadow relative group">
+        <Card className="p-6 mb-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow relative group">
             {/* Delete Button for Admin */}
             {isAdmin && onDelete && (
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -66,7 +66,7 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                className="text-slate-400 dark:text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
                                 disabled={isDeleting}
                             >
                                 <Trash2 className="w-4 h-4" />
@@ -77,7 +77,7 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
                                 <AlertDialogTitle>Delete Listening Episode?</AlertDialogTitle>
                                 <AlertDialogDescription>
                                     This action cannot be undone. This will permanently delete the episode
-                                    <span className="font-bold text-slate-900"> "{episode.title}" </span>
+                                    <span className="font-bold text-slate-900 dark:text-white"> "{episode.title}" </span>
                                     and all its content.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
@@ -97,12 +97,12 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
 
             {/* Title and Badge */}
             <div className="flex items-start justify-between mb-3 pr-10">
-                <h3 className="text-lg font-semibold text-slate-900">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                     {episode.title}
                 </h3>
                 <Badge
                     variant="secondary"
-                    className="ml-2 bg-blue-100 text-blue-700 hover:bg-blue-200 flex-shrink-0"
+                    className="ml-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-900/70 flex-shrink-0"
                 >
                     {episode.level}
                 </Badge>
@@ -117,12 +117,12 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
             />
 
             {/* Transcript Section */}
-            <div className="mt-4 pt-4 border-t border-slate-200">
+            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
                 <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowTranscript(!showTranscript)}
-                    className="text-slate-600 hover:text-slate-900 p-0 h-auto font-normal"
+                    className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 h-auto font-normal"
                 >
                     {showTranscript ? (
                         <>
@@ -138,7 +138,7 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
                 </Button>
 
                 {showTranscript && (
-                    <div className="mt-3 p-4 bg-slate-50 rounded-md border border-slate-200">
+                    <div className="mt-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-700">
                         <div className="space-y-2">
                             {transcriptLines.map((line, idx) => {
                                 // Check if line starts with speaker label (e.g., "A:", "B:")
@@ -150,16 +150,16 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
 
                                     return (
                                         <div key={idx} className="flex gap-2">
-                                            <span className="font-semibold text-blue-700 min-w-[30px]">
+                                            <span className="font-semibold text-blue-700 dark:text-blue-400 min-w-[30px]">
                                                 {speaker}
                                             </span>
-                                            <span className="text-slate-700">{text}</span>
+                                            <span className="text-slate-700 dark:text-slate-300">{text}</span>
                                         </div>
                                     );
                                 }
 
                                 return (
-                                    <p key={idx} className="text-slate-700">
+                                    <p key={idx} className="text-slate-700 dark:text-slate-300">
                                         {line}
                                     </p>
                                 );
@@ -171,12 +171,12 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
 
             {/* Notes Section (if exists) */}
             {episode.notes && (
-                <div className="mt-4 pt-4 border-t border-slate-200">
+                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setShowNotes(!showNotes)}
-                        className="text-slate-600 hover:text-slate-900 p-0 h-auto font-normal"
+                        className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-0 h-auto font-normal"
                     >
                         {showNotes ? (
                             <>
@@ -191,8 +191,8 @@ export default function ListeningEpisode({ episode, onPlay, shouldPause, onDelet
                         )}
                     </Button>
                     {showNotes && (
-                        <div className="mt-3 p-3 bg-amber-50 border-l-4 border-amber-400 rounded">
-                            <p className="text-sm text-slate-700 whitespace-pre-wrap">{episode.notes}</p>
+                        <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 dark:border-amber-600 rounded">
+                            <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{episode.notes}</p>
                         </div>
                     )}
                 </div>
@@ -236,14 +236,14 @@ function MyWritingSection({ episodeId, initialWriting }: { episodeId: string; in
     };
 
     return (
-        <div className="mt-4 pt-4 border-t border-slate-200">
+        <div className="mt-4 pt-4 border-t border-border">
             <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-slate-700">
+                <label className="text-sm font-semibold text-foreground">
                     My Writing Practice
                 </label>
                 <div className="flex items-center gap-2">
                     {saveMessage && (
-                        <span className={`text-xs ${saveMessage.includes('✓') ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`text-xs ${saveMessage.includes('✓') ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
                             {saveMessage}
                         </span>
                     )}
@@ -251,7 +251,7 @@ function MyWritingSection({ episodeId, initialWriting }: { episodeId: string; in
                         onClick={handleSave}
                         disabled={isSaving}
                         size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground"
                     >
                         {isSaving ? 'Saving...' : 'Save'}
                     </Button>
@@ -262,7 +262,7 @@ function MyWritingSection({ episodeId, initialWriting }: { episodeId: string; in
                 onChange={(e) => setMyWriting(e.target.value)}
                 placeholder="Write what you hear... (practice dictation)"
                 rows={4}
-                className="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y font-mono text-sm"
+                className="w-full p-3 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring resize-y font-mono text-sm bg-background text-foreground placeholder:text-muted-foreground"
             />
         </div>
     );

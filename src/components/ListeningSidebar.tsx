@@ -23,7 +23,7 @@ export default function ListeningSidebar({ selectedTopic, onTopicChange }: Liste
         <>
             {/* Mobile: Horizontal Scrollable Filter */}
             <div className="md:hidden mb-6 -mx-4 px-4">
-                <h2 className="text-sm font-semibold text-slate-600 mb-3">Topics</h2>
+                <h2 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Topics</h2>
                 <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                     {TOPICS.map((topic) => (
                         <Button
@@ -33,7 +33,7 @@ export default function ListeningSidebar({ selectedTopic, onTopicChange }: Liste
                             variant={selectedTopic === topic.id ? 'default' : 'outline'}
                             className={`flex-shrink-0 whitespace-nowrap ${selectedTopic === topic.id
                                 ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                                : 'bg-white hover:bg-blue-50 text-slate-700 border-slate-200'
+                                : 'bg-transparent dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700'
                                 }`}
                         >
                             {topic.name}
@@ -45,7 +45,7 @@ export default function ListeningSidebar({ selectedTopic, onTopicChange }: Liste
             {/* Desktop: Vertical Sidebar */}
             <aside className="hidden md:block w-48 flex-shrink-0">
                 <div className="sticky top-24">
-                    <h2 className="text-lg font-bold text-slate-900 mb-4">Topics</h2>
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Topics</h2>
                     <div className="space-y-2">
                         {TOPICS.map((topic) => (
                             <Button
@@ -54,7 +54,7 @@ export default function ListeningSidebar({ selectedTopic, onTopicChange }: Liste
                                 variant={selectedTopic === topic.id ? 'default' : 'outline'}
                                 className={`w-full justify-start text-left ${selectedTopic === topic.id
                                     ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                                    : 'bg-white hover:bg-blue-50 text-slate-700 border-slate-200'
+                                    : 'bg-transparent dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700'
                                     }`}
                             >
                                 {topic.name}

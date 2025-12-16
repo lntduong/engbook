@@ -60,7 +60,7 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
                 <Button
                     variant="ghost"
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
                     <ArrowLeft size={20} />
                     Back
@@ -75,7 +75,7 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
                     <Button
                         onClick={handleSubmit}
                         disabled={isSaving}
-                        className="bg-blue-600 hover:bg-blue-700 min-w-[100px]"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground min-w-[100px]"
                     >
                         {isSaving ? 'Saving...' : 'Save Note'}
                     </Button>
@@ -83,25 +83,25 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
             </div>
 
             {error && (
-                <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
+                <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6">
                     {error}
                 </div>
             )}
 
-            <div className="space-y-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <div className="space-y-6 bg-card rounded-xl shadow-sm border border-border p-6 sm:p-8">
                 <div>
                     <input
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Untitled Note"
-                        className="w-full text-4xl font-bold text-gray-900 placeholder-gray-300 border-none focus:ring-0 px-0 bg-transparent"
+                        className="w-full text-4xl font-bold text-foreground placeholder:text-muted-foreground border-none focus:ring-0 px-0 bg-transparent"
                     />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-1">
+                        <label className="block text-sm font-medium text-muted-foreground mb-1">
                             Category
                         </label>
                         <input
@@ -110,7 +110,7 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
                             onChange={(e) => setCategory(e.target.value)}
                             list="categories-list"
                             placeholder="Select or type category..."
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            className="w-full px-3 py-2 bg-background border border-input text-foreground rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         />
                         <datalist id="categories-list">
                             {categories.map((cat) => (
@@ -120,7 +120,7 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-1">
+                        <label className="block text-sm font-medium text-muted-foreground mb-1">
                             Tags
                         </label>
                         <input
@@ -128,12 +128,12 @@ export default function NoteEditorForm({ initialData, onSave, categories = [], i
                             value={tags}
                             onChange={(e) => setTags(e.target.value)}
                             placeholder="e.g., grammar, beginner"
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            className="w-full px-3 py-2 bg-background border border-input text-foreground rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         />
                     </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-100">
+                <div className="pt-4 border-t border-border">
                     <RichTextEditor
                         value={content}
                         onChange={setContent}

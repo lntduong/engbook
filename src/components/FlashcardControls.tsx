@@ -36,9 +36,9 @@ export default function FlashcardControls({
             <div className="flex items-center gap-3">
                 {/* Lesson Filter */}
                 <Select value={lessonFilter} onValueChange={onLessonFilterChange}>
-                    <SelectTrigger className="w-40 bg-white border-slate-200">
+                    <SelectTrigger className="w-40 bg-background border-input text-foreground">
                         <div className="flex items-center gap-2">
-                            <BookOpen className="h-4 w-4 text-slate-500" />
+                            <BookOpen className="h-4 w-4 text-muted-foreground" />
                             <SelectValue placeholder="Lesson" />
                         </div>
                     </SelectTrigger>
@@ -57,7 +57,7 @@ export default function FlashcardControls({
                     variant="outline"
                     size="sm"
                     onClick={onRandomize}
-                    className="hover:bg-slate-100"
+                    className="hover:bg-muted text-foreground bg-background border-input"
                 >
                     <Shuffle className="h-4 w-4 mr-2" />
                     Random
@@ -68,14 +68,14 @@ export default function FlashcardControls({
                     variant={flipMode === 'on' ? 'default' : 'outline'}
                     size="sm"
                     onClick={onFlipModeChange}
-                    className={flipMode === 'on' ? 'bg-blue-600 hover:bg-blue-700' : 'hover:bg-slate-100'}
+                    className={flipMode === 'on' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : 'hover:bg-muted text-foreground bg-background border-input'}
                 >
                     📱 Flip {flipMode === 'on' ? 'On' : 'Off'}
                 </Button>
             </div>
 
             {/* Counter */}
-            <div className="text-lg font-medium text-slate-600">
+            <div className="text-lg font-medium text-muted-foreground">
                 {totalCards > 0 ? `${currentIndex + 1}/${totalCards}` : '0/0'}
             </div>
         </div>

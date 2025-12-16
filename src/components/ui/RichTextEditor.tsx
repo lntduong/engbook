@@ -5,6 +5,7 @@ import { BlockNoteView } from '@blocknote/shadcn';
 import { useCreateBlockNote } from '@blocknote/react';
 import '@blocknote/shadcn/style.css';
 import ErrorBoundary from './ErrorBoundary';
+import { useTheme } from 'next-themes';
 
 interface RichTextEditorProps {
     value: string;
@@ -13,6 +14,7 @@ interface RichTextEditorProps {
 }
 
 export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
+    const { theme, systemTheme } = useTheme();
     const editor = useCreateBlockNote({
         uploadFile: async (file: File) => {
             try {
@@ -89,10 +91,12 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         return <div>Loading editor...</div>;
     }
 
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+
     return (
-        <div className="border border-gray-300 rounded-lg overflow-hidden bg-white relative flex flex-col h-full min-h-[300px]">
-            <ErrorBoundary fallback={<div className="p-4 text-red-500">Error loading editor content. Please try refreshing.</div>}>
-                <BlockNoteView editor={editor} onChange={handleChange} theme="light" />
+        <div className="border border-input rounded-lg overflow-hidden bg-background relative flex flex-col h-full min-h-[300px]">
+            <ErrorBoundary fallback={<div className="p-4 text-destructive">Error loading editor content. Please try refreshing.</div>}>
+                <BlockNoteView editor={editor} onChange={handleChange} theme={currentTheme === 'dark' ? 'dark' : 'light'} />
             </ErrorBoundary>
         </div>
     );

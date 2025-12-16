@@ -77,15 +77,15 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Header Section */}
         <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             ENG NOTEBOOK
           </h1>
-          <p className="text-xl text-slate-500 font-medium">
+          <p className="text-xl text-slate-500 dark:text-slate-400 font-medium">
             Hi, {userName}! Ready to learn something new today?
           </p>
         </div>

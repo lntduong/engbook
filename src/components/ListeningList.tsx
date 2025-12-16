@@ -44,10 +44,10 @@ export default function ListeningList({ episodes, currentlyPlaying, onEpisodePla
     if (episodes.length === 0) {
         return (
             <div className="text-center py-20">
-                <p className="text-slate-500 text-lg">
+                <p className="text-slate-500 dark:text-slate-400 text-lg">
                     No listening episodes found for this topic.
                 </p>
-                <p className="text-slate-400 text-sm mt-2">
+                <p className="text-slate-400 dark:text-slate-500 text-sm mt-2">
                     Try selecting a different topic or add episodes using the + button.
                 </p>
             </div>
@@ -60,7 +60,7 @@ export default function ListeningList({ episodes, currentlyPlaying, onEpisodePla
                 <div key={topic}>
                     {/* Topic Header */}
                     <div className="mb-4">
-                        <h2 className="text-2xl font-bold text-slate-900 border-b-2 border-blue-600 pb-2 inline-block">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white border-b-2 border-blue-600 pb-2 inline-block">
                             {topic}
                         </h2>
                     </div>

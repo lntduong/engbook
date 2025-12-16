@@ -5,6 +5,8 @@ import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/shadcn';
 import '@blocknote/shadcn/style.css';
 
+import { useTheme } from 'next-themes';
+
 interface NoteViewerProps {
     content: string;
 }
@@ -12,6 +14,7 @@ interface NoteViewerProps {
 export default function NoteViewer({ content }: NoteViewerProps) {
     const editor = useCreateBlockNote();
     const [initialContentLoaded, setInitialContentLoaded] = useState(false);
+    const { theme, systemTheme } = useTheme();
 
     useEffect(() => {
         if (!editor || initialContentLoaded) return;
@@ -39,8 +42,10 @@ export default function NoteViewer({ content }: NoteViewerProps) {
     }, [editor, content, initialContentLoaded]);
 
     if (!editor || !initialContentLoaded) {
-        return <div className="animate-pulse h-20 bg-gray-100 rounded-lg"></div>;
+        return <div className="animate-pulse h-20 bg-muted rounded-lg"></div>;
     }
 
-    return <BlockNoteView editor={editor} editable={false} theme="light" />;
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+
+    return <BlockNoteView editor={editor} editable={false} theme={currentTheme === 'dark' ? 'dark' : 'light'} />;
 }

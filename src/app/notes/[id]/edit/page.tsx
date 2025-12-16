@@ -104,7 +104,7 @@ export default function EditNotePage() {
     if (!note) return null;
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
             <NoteEditorForm
                 initialData={note}
                 onSave={handleSave}

@@ -139,23 +139,23 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[500px] bg-white/95 backdrop-blur-xl border-slate-100 shadow-2xl">
+            <DialogContent className="sm:max-w-[500px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-slate-100 dark:border-slate-800 shadow-2xl">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                        <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                    <DialogTitle className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                             <Plus className="w-5 h-5" />
                         </div>
                         Add New Vocabulary
                     </DialogTitle>
-                    <DialogDescription className="text-slate-500">
+                    <DialogDescription className="text-slate-500 dark:text-slate-400">
                         Expand your vocabulary by adding a new word to your collection.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="grid gap-6 py-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="word" className="text-slate-700 font-semibold">Word</Label>
+                        <Label htmlFor="word" className="text-slate-700 dark:text-slate-200 font-semibold">Word</Label>
                         <div className="relative">
-                            <Type className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+                            <Type className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4" />
                             <Input
                                 id="word"
                                 value={formData.word}
@@ -168,7 +168,7 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                                     }));
                                 }}
                                 placeholder="e.g. Serendipity"
-                                className="pl-10 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                className="pl-10 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
                                 required
                             />
                         </div>
@@ -176,20 +176,20 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="ipa" className="text-slate-700 font-semibold">IPA</Label>
+                            <Label htmlFor="ipa" className="text-slate-700 dark:text-slate-200 font-semibold">IPA</Label>
                             <div className="relative">
-                                <Volume2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+                                <Volume2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4" />
                                 <Input
                                     id="ipa"
                                     value={formData.ipa}
                                     onChange={(e) => setFormData({ ...formData, ipa: e.target.value })}
                                     placeholder="/ˌser.ənˈdɪp.ə.ti/"
-                                    className="pl-10 border-slate-200"
+                                    className="pl-10 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                 />
                             </div>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="type" className="text-slate-700 font-semibold">Type</Label>
+                            <Label htmlFor="type" className="text-slate-700 dark:text-slate-200 font-semibold">Type</Label>
                             <div className="space-y-2">
                                 <Select
                                     value={isCustomType ? 'other' : formData.type}
@@ -203,7 +203,7 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                                         }
                                     }}
                                 >
-                                    <SelectTrigger className="border-slate-200">
+                                    <SelectTrigger className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                         <SelectValue placeholder="Select type" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -220,7 +220,7 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                                         placeholder="Enter new type"
                                         value={customType}
                                         onChange={(e) => setCustomType(e.target.value)}
-                                        className="border-slate-200"
+                                        className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                         required
                                     />
                                 )}
@@ -229,29 +229,29 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="meaning" className="text-slate-700 font-semibold">Meaning</Label>
+                        <Label htmlFor="meaning" className="text-slate-700 dark:text-slate-200 font-semibold">Meaning</Label>
                         <div className="relative">
-                            <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+                            <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4" />
                             <Input
                                 id="meaning"
                                 value={formData.meaning}
                                 onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
                                 placeholder="e.g. Sự tình cờ may mắn"
-                                className="pl-10 border-slate-200"
+                                className="pl-10 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                 required
                             />
                         </div>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="level" className="text-slate-700 font-semibold">Level</Label>
+                        <Label htmlFor="level" className="text-slate-700 dark:text-slate-200 font-semibold">Level</Label>
                         <div className="relative">
-                            <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4 z-10" />
+                            <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4 z-10" />
                             <Select
                                 value={formData.level}
                                 onValueChange={(val) => setFormData({ ...formData, level: val })}
                             >
-                                <SelectTrigger className="pl-10 border-slate-200">
+                                <SelectTrigger className="pl-10 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                     <SelectValue placeholder="Select Level" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -266,24 +266,24 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="lesson" className="text-slate-700 font-semibold">Lesson <span className="text-slate-400 font-normal text-xs">(Optional)</span></Label>
+                        <Label htmlFor="lesson" className="text-slate-700 dark:text-slate-200 font-semibold">Lesson <span className="text-slate-400 font-normal text-xs">(Optional)</span></Label>
                         <Input
                             id="lesson"
                             value={formData.lesson}
                             onChange={(e) => setFormData({ ...formData, lesson: e.target.value })}
                             placeholder="e.g. Lesson 5, Unit 3"
-                            className="border-slate-200"
+                            className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="example" className="text-slate-700 font-semibold">Example <span className="text-slate-400 font-normal text-xs">(Optional)</span></Label>
+                        <Label htmlFor="example" className="text-slate-700 dark:text-slate-200 font-semibold">Example <span className="text-slate-400 font-normal text-xs">(Optional)</span></Label>
                         <Input
                             id="example"
                             value={formData.example}
                             onChange={(e) => setFormData({ ...formData, example: e.target.value })}
                             placeholder="e.g. It was a serendipitous encounter."
-                            className="border-slate-200"
+                            className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 

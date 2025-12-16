@@ -53,43 +53,43 @@ export default function VocabTable({ data, startIndex, onDelete, isAdmin = false
     };
 
     return (
-        <Card className="overflow-hidden border-slate-100 shadow-lg bg-white/90 backdrop-blur-sm">
+        <Card className="overflow-hidden border-slate-100 dark:border-slate-800 shadow-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
             <Table>
-                <TableHeader className="bg-slate-50/50">
-                    <TableRow className="hover:bg-transparent border-slate-100">
-                        <TableHead className="w-16 text-slate-400 font-semibold">#</TableHead>
-                        <TableHead className="text-slate-600 font-semibold">Word</TableHead>
-                        <TableHead className="text-slate-600 font-semibold">IPA</TableHead>
-                        <TableHead className="text-slate-600 font-semibold">Meaning</TableHead>
-                        <TableHead className="text-slate-600 font-semibold">Level</TableHead>
-                        <TableHead className="text-slate-600 font-semibold">Lesson</TableHead>
-                        {isAdmin && <TableHead className="w-16 text-slate-600 font-semibold">Actions</TableHead>}
+                <TableHeader className="bg-slate-50/50 dark:bg-slate-800/50">
+                    <TableRow className="hover:bg-transparent border-slate-100 dark:border-slate-800">
+                        <TableHead className="w-16 text-slate-400 dark:text-slate-500 font-semibold">#</TableHead>
+                        <TableHead className="text-slate-600 dark:text-slate-300 font-semibold">Word</TableHead>
+                        <TableHead className="text-slate-600 dark:text-slate-300 font-semibold">IPA</TableHead>
+                        <TableHead className="text-slate-600 dark:text-slate-300 font-semibold">Meaning</TableHead>
+                        <TableHead className="text-slate-600 dark:text-slate-300 font-semibold">Level</TableHead>
+                        <TableHead className="text-slate-600 dark:text-slate-300 font-semibold">Lesson</TableHead>
+                        {isAdmin && <TableHead className="w-16 text-slate-600 dark:text-slate-300 font-semibold">Actions</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.length > 0 ? (
                         data.map((item, index) => (
-                            <TableRow key={item.id} className="hover:bg-blue-50/50 transition-colors border-slate-100 group">
-                                <TableCell className="font-medium text-slate-400">
+                            <TableRow key={item.id} className="hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors border-slate-100 dark:border-slate-800 group">
+                                <TableCell className="font-medium text-slate-400 dark:text-slate-500">
                                     {startIndex + index + 1}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex flex-col">
-                                        <span className="text-lg font-bold text-slate-800 tracking-tight group-hover:text-blue-600 transition-colors">{item.word}</span>
-                                        {item.type && <span className="text-xs text-slate-400 italic font-medium">({item.type})</span>}
+                                        <span className="text-lg font-bold text-slate-800 dark:text-slate-200 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.word}</span>
+                                        {item.type && <span className="text-xs text-slate-400 dark:text-slate-500 italic font-medium">({item.type})</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell className="font-mono text-slate-500 text-sm">
-                                    <div className="flex items-center gap-2 bg-slate-50 w-fit px-2 py-1 rounded-md border border-slate-100">
+                                <TableCell className="font-mono text-slate-500 dark:text-slate-400 text-sm">
+                                    <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 w-fit px-2 py-1 rounded-md border border-slate-100 dark:border-slate-700">
                                         <span>{item.ipa}</span>
                                         <AudioButton text={item.word} />
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-slate-700 font-medium">
+                                <TableCell className="text-slate-700 dark:text-slate-300 font-medium">
                                     <div className="flex flex-col gap-1">
                                         <span>{item.meaning}</span>
                                         {item.example && (
-                                            <span className="text-xs text-slate-500 italic border-l-2 border-blue-200 pl-2">
+                                            <span className="text-xs text-slate-500 dark:text-slate-400 italic border-l-2 border-blue-200 dark:border-blue-800 pl-2">
                                                 {item.example}
                                             </span>
                                         )}
@@ -108,8 +108,8 @@ export default function VocabTable({ data, startIndex, onDelete, isAdmin = false
                                         {item.level}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-slate-600 text-sm">
-                                    {item.lesson || <span className="text-slate-300">—</span>}
+                                <TableCell className="text-slate-600 dark:text-slate-300 text-sm">
+                                    {item.lesson || <span className="text-slate-300 dark:text-slate-600">—</span>}
                                 </TableCell>
                                 {isAdmin && (
                                     <TableCell>
@@ -118,7 +118,7 @@ export default function VocabTable({ data, startIndex, onDelete, isAdmin = false
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                    className="text-slate-400 dark:text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
                                                     disabled={deletingId === item.id}
                                                 >
                                                     <Trash2 className="w-4 h-4" />
@@ -129,7 +129,7 @@ export default function VocabTable({ data, startIndex, onDelete, isAdmin = false
                                                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                                     <AlertDialogDescription>
                                                         This action cannot be undone. This will permanently delete the word
-                                                        <span className="font-bold text-slate-900"> "{item.word}" </span>
+                                                        <span className="font-bold text-slate-900 dark:text-white"> "{item.word}" </span>
                                                         from your vocabulary list.
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>

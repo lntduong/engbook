@@ -42,10 +42,10 @@ export default function GrammarList({ grammarList, onDelete, isAdmin }: GrammarL
     if (grammarList.length === 0) {
         return (
             <div className="text-center py-20">
-                <p className="text-slate-500 text-lg">
+                <p className="text-slate-500 dark:text-slate-400 text-lg">
                     No grammar topics found for this level.
                 </p>
-                <p className="text-slate-400 text-sm mt-2">
+                <p className="text-slate-400 dark:text-slate-500 text-sm mt-2">
                     Try selecting a different level or add grammar topics using the + button.
                 </p>
             </div>
@@ -58,7 +58,7 @@ export default function GrammarList({ grammarList, onDelete, isAdmin }: GrammarL
                 <div key={category}>
                     {/* Category Header */}
                     <div className="mb-4">
-                        <h2 className="text-2xl font-bold text-slate-900 border-b-2 border-blue-600 pb-2 inline-block">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white border-b-2 border-blue-600 pb-2 inline-block">
                             {category}
                         </h2>
                     </div>

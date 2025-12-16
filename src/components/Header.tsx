@@ -14,15 +14,15 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/90 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-white/20 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/90 dark:supports-[backdrop-filter]:bg-slate-950/90 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-800 transition-opacity hover:opacity-80">
+            <Link href="/" className="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-100 transition-opacity hover:opacity-80">
               <div className="p-1.5 bg-blue-600 rounded-lg shadow-lg shadow-blue-600/20">
                 <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-100 dark:to-slate-300">
                 Engbook
               </span>
             </Link>
@@ -47,17 +47,17 @@ export default function Header() {
               <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
             ) : session ? (
               <>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-                  <User className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-slate-700">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 rounded-lg border border-blue-200 dark:border-slate-700">
+                  <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                     {session.user?.name || session.user?.email}
                   </span>
                   {session.user?.role === 'ADMIN' && (
-                    <Shield className="w-4 h-4 text-purple-600" />
+                    <Shield className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                   )}
                 </div>
                 {session.user?.role === 'ADMIN' && (
-                  <Button variant="ghost" size="sm" asChild className="text-purple-600 hover:text-purple-700 hover:bg-purple-50">
+                  <Button variant="ghost" size="sm" asChild className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20">
                     <Link href="/admin/users">
                       <Shield className="w-4 h-4 mr-2" /> Admin
                     </Link>

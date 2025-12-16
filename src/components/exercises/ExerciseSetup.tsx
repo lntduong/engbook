@@ -66,10 +66,10 @@ export default function ExerciseSetup({ onStart }: ExerciseSetupProps) {
     };
 
     return (
-        <Card className="max-w-md mx-auto p-6 bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl">
+        <Card className="max-w-md mx-auto p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200 dark:border-slate-800 shadow-xl">
             <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Mini Quiz</h2>
-                <p className="text-slate-500 mt-2">Test your knowledge</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Mini Quiz</h2>
+                <p className="text-slate-500 dark:text-slate-400 mt-2">Test your knowledge</p>
             </div>
 
             <div className="space-y-6">

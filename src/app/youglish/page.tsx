@@ -26,45 +26,45 @@ export default function YouGlishPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() => router.push('/')}
-                    className="hover:bg-slate-100"
+                    className="hover:bg-muted text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back
                 </Button>
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    <h1 className="text-3xl font-bold text-foreground tracking-tight">
                         Pronunciation
                     </h1>
-                    <p className="text-slate-500 mt-1">Improve your English pronunciation with real-world video examples.</p>
+                    <p className="text-muted-foreground mt-1">Improve your English pronunciation with real-world video examples.</p>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-slate-100">
+            <div className="bg-card rounded-xl shadow-lg p-6 mb-8 border border-border">
                 <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                         <Input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Enter a word or phrase (e.g. 'serendipity')"
-                            className="pl-10 text-base sm:text-lg py-6"
+                            className="pl-10 text-base sm:text-lg py-6 bg-background border-input"
                         />
                     </div>
-                    <Button type="submit" size="lg" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+                    <Button type="submit" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
                         Search
                     </Button>
                 </form>
             </div>
 
             {query ? (
-                <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-100 overflow-hidden">
-                    <h2 className="text-xl font-semibold mb-4 text-slate-700">
-                        Pronunciation for: <span className="text-blue-600">"{query}"</span>
+                <div className="bg-card rounded-xl shadow-lg p-6 border border-border overflow-hidden">
+                    <h2 className="text-xl font-semibold mb-4 text-foreground">
+                        Pronunciation for: <span className="text-primary">"{query}"</span>
                     </h2>
                     <YouGlishWidget query={query} />
                 </div>
             ) : (
-                <div className="text-center text-slate-500 py-12 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <div className="text-center text-muted-foreground py-12 bg-muted/50 rounded-xl border border-dashed border-border">
                     <p className="text-lg">Enter a word above to see how it's pronounced in real contexts.</p>
                 </div>
             )}

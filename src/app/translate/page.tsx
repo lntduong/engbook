@@ -61,28 +61,28 @@ export default function TranslatePage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-background">
             <div className="max-w-5xl mx-auto px-4 py-8">
 
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
-                    <Button variant="ghost" size="sm" onClick={() => router.push('/')}>
+                    <Button variant="ghost" size="sm" onClick={() => router.push('/')} className="text-muted-foreground hover:text-foreground">
                         <ArrowLeft className="h-4 w-4 mr-2" /> Back
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Translator</h1>
-                        <p className="text-slate-500 mt-1">Instantly translate text between multiple languages.</p>
+                        <h1 className="text-3xl font-bold text-foreground tracking-tight">Translator</h1>
+                        <p className="text-muted-foreground mt-1">Instantly translate text between multiple languages.</p>
                     </div>
                 </div>
 
                 {/* Translation Box */}
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
 
                     {/* Controls */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50 gap-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-border bg-muted/30 gap-4">
                         <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                             <Select value={sourceLang} onValueChange={setSourceLang}>
-                                <SelectTrigger className="w-[45%] sm:w-32 bg-white"><SelectValue placeholder="Detect" /></SelectTrigger>
+                                <SelectTrigger className="w-[45%] sm:w-32 bg-background border-input text-foreground"><SelectValue placeholder="Detect" /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="auto">Detect</SelectItem>
                                     {LANGUAGES.map(l => <SelectItem key={l.code} value={l.code}>{l.name}</SelectItem>)}
@@ -90,11 +90,11 @@ export default function TranslatePage() {
                             </Select>
 
                             <Button variant="ghost" size="icon" onClick={swapLanguages} disabled={sourceLang === 'auto'}>
-                                <ArrowLeftRight className="h-4 w-4 text-slate-500" />
+                                <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
                             </Button>
 
                             <Select value={targetLang} onValueChange={setTargetLang}>
-                                <SelectTrigger className="w-[45%] sm:w-32 bg-white"><SelectValue /></SelectTrigger>
+                                <SelectTrigger className="w-[45%] sm:w-32 bg-background border-input text-foreground"><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                     {LANGUAGES.map(l => <SelectItem key={l.code} value={l.code}>{l.name}</SelectItem>)}
                                 </SelectContent>
@@ -104,17 +104,17 @@ export default function TranslatePage() {
                         <Button
                             onClick={handleTranslate}
                             disabled={loading || !sourceText}
-                            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
                         >
                             {loading ? 'Translating...' : 'Translate'}
                         </Button>
                     </div>
 
                     {/* Text Areas */}
-                    <div className="grid md:grid-cols-2 h-[400px] divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                    <div className="grid md:grid-cols-2 h-[400px] divide-y md:divide-y-0 md:divide-x divide-border">
                         <Textarea
                             placeholder="Enter text"
-                            className="h-full resize-none border-0 p-6 text-lg focus-visible:ring-0 bg-transparent text-slate-800 placeholder:text-slate-300"
+                            className="h-full resize-none border-0 p-6 text-lg focus-visible:ring-0 bg-transparent text-foreground placeholder:text-muted-foreground"
                             value={sourceText}
                             onChange={(e) => setSourceText(e.target.value)}
                             onKeyDown={(e) => {
@@ -124,16 +124,16 @@ export default function TranslatePage() {
                             }}
                         />
 
-                        <div className="relative h-full bg-slate-50/30">
+                        <div className="relative h-full bg-muted/10">
                             <Textarea
                                 readOnly
                                 placeholder="Translation"
-                                className="h-full resize-none border-0 p-6 text-lg focus-visible:ring-0 bg-transparent text-slate-800 placeholder:text-slate-300"
+                                className="h-full resize-none border-0 p-6 text-lg focus-visible:ring-0 bg-transparent text-foreground placeholder:text-muted-foreground"
                                 value={translatedText}
                             />
                             {loading && (
-                                <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center">
-                                    <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full" />
+                                <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center">
+                                    <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
                                 </div>
                             )}
                         </div>

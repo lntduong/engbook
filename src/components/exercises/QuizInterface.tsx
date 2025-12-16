@@ -49,20 +49,20 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
 
     if (showResult) {
         return (
-            <Card className="max-w-md mx-auto p-8 text-center bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl">
+            <Card className="max-w-md mx-auto p-8 text-center bg-card/80 backdrop-blur-sm border-border shadow-xl">
                 <div className="mb-6">
-                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="w-10 h-10 text-blue-600" />
+                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle className="w-10 h-10 text-primary" />
                     </div>
-                    <h2 className="text-3xl font-bold text-slate-900">Quiz Complete!</h2>
-                    <p className="text-slate-500 mt-2">Here is your result</p>
+                    <h2 className="text-3xl font-bold text-foreground">Quiz Complete!</h2>
+                    <p className="text-muted-foreground mt-2">Here is your result</p>
                 </div>
 
-                <div className="bg-slate-50 rounded-xl p-6 mb-8">
-                    <div className="text-4xl font-bold text-blue-600 mb-1">
+                <div className="bg-muted/50 rounded-xl p-6 mb-8">
+                    <div className="text-4xl font-bold text-primary mb-1">
                         {score} / {questions.length}
                     </div>
-                    <p className="text-sm text-slate-500 font-medium uppercase tracking-wide">Correct Answers</p>
+                    <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">Correct Answers</p>
                 </div>
 
                 <div className="flex gap-3">
@@ -74,7 +74,7 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
                         Back to Menu
                     </Button>
                     <Button
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                        className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
                         onClick={() => window.location.reload()}
                     >
                         <RotateCcw className="w-4 h-4 mr-2" />
@@ -86,16 +86,16 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
     }
 
     return (
-        <Card className="max-w-2xl mx-auto p-6 sm:p-8 bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl min-h-[400px] flex flex-col">
+        <Card className="max-w-2xl mx-auto p-6 sm:p-8 bg-card/80 backdrop-blur-sm border-border shadow-xl min-h-[400px] flex flex-col">
             {/* Progress */}
-            <div className="flex justify-between items-center mb-8 text-sm font-medium text-slate-500">
+            <div className="flex justify-between items-center mb-8 text-sm font-medium text-muted-foreground">
                 <span>Question {currentIndex + 1} of {questions.length}</span>
                 <span>Score: {score}</span>
             </div>
 
             {/* Question */}
             <div className="flex-1">
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-8 text-center leading-relaxed">
+                <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-8 text-center leading-relaxed">
                     {currentQuestion.question}
                 </h3>
 
@@ -104,18 +104,18 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
                         const isSelected = selectedAnswer === option;
                         const isCorrect = option === currentQuestion.correctAnswer;
 
-                        let variantClass = "hover:bg-slate-50 border-slate-200";
+                        let variantClass = "hover:bg-muted border-input text-foreground";
 
                         if (isAnswered) {
                             if (isCorrect) {
-                                variantClass = "bg-green-50 border-green-500 text-green-700";
+                                variantClass = "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-700 dark:text-green-400";
                             } else if (isSelected && !isCorrect) {
-                                variantClass = "bg-red-50 border-red-500 text-red-700";
+                                variantClass = "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-700 dark:text-red-400";
                             } else {
-                                variantClass = "opacity-50";
+                                variantClass = "opacity-50 text-muted-foreground border-border";
                             }
                         } else if (isSelected) {
-                            variantClass = "border-blue-500 bg-blue-50 text-blue-700";
+                            variantClass = "border-primary bg-primary/10 text-primary";
                         }
 
                         return (
@@ -132,7 +132,7 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
                                     "w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors",
                                     isAnswered && isCorrect ? "border-green-500 bg-green-500 text-white" :
                                         isAnswered && isSelected && !isCorrect ? "border-red-500 bg-red-500 text-white" :
-                                            "border-slate-300 group-hover:border-slate-400"
+                                            "border-muted-foreground group-hover:border-primary"
                                 )}>
                                     {isAnswered && isCorrect ? <CheckCircle className="w-4 h-4" /> :
                                         isAnswered && isSelected && !isCorrect ? <XCircle className="w-4 h-4" /> :
@@ -147,7 +147,7 @@ export default function QuizInterface({ questions, onExit }: QuizInterfaceProps)
 
             {/* Footer */}
             {isAnswered && (
-                <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end animate-in fade-in slide-in-from-bottom-4">
+                <div className="mt-8 pt-6 border-t border-border flex justify-end animate-in fade-in slide-in-from-bottom-4">
                     <Button
                         onClick={handleNext}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-8"

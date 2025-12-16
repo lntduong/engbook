@@ -148,14 +148,14 @@ export default function FlashcardPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => router.push('/')}
-                        className="hover:bg-slate-100"
+                        className="hover:bg-muted text-muted-foreground hover:text-foreground"
                     >
                         <ArrowLeft className="h-4 w-4 mr-2" />
                         Back
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Flashcard</h1>
-                        <p className="text-slate-500 mt-1">Practice your vocabulary with flashcards.</p>
+                        <h1 className="text-3xl font-bold text-foreground tracking-tight">Flashcard</h1>
+                        <p className="text-muted-foreground mt-1">Practice your vocabulary with flashcards.</p>
                     </div>
                 </div>
 
@@ -192,10 +192,10 @@ export default function FlashcardPage() {
                     </>
                 ) : (
                     <div className="text-center py-20">
-                        <p className="text-slate-500 text-lg">No vocabulary items found. Please add some words first.</p>
+                        <p className="text-muted-foreground text-lg">No vocabulary items found. Please add some words first.</p>
                         <Button
                             onClick={() => router.push('/')}
-                            className="mt-4 bg-blue-600 hover:bg-blue-700"
+                            className="mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
                         >
                             Go to Vocabulary List
                         </Button>
@@ -203,7 +203,7 @@ export default function FlashcardPage() {
                 )}
 
                 {/* Keyboard shortcuts hint */}
-                <div className="mt-12 text-center text-sm text-slate-400 hidden sm:block">
+                <div className="mt-12 text-center text-sm text-muted-foreground hidden sm:block">
                     <p>Keyboard shortcuts: ← → (navigate) | Space (flip) | P (play audio)</p>
                 </div>
             </main>

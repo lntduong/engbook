@@ -73,41 +73,41 @@ export default function NoteDetailPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
             <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
                 <Button
                     variant="ghost"
                     onClick={() => router.push('/notes')}
-                    className="mb-6 hover:bg-gray-200"
+                    className="mb-6 hover:bg-muted text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back to Notes
                 </Button>
 
-                <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-8 border-b border-gray-100">
+                <article className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                    <div className="p-8 border-b border-border">
                         <div className="flex flex-wrap gap-2 mb-4">
                             {note.category && (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
                                     <Folder className="w-3 h-3 mr-1" />
                                     {note.category}
                                 </span>
                             )}
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-muted text-muted-foreground">
                                 <Calendar className="w-3 h-3 mr-1" />
                                 {new Date(note.dateCreated).toLocaleDateString()}
                             </span>
                         </div>
 
-                        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
                             {note.title}
                         </h1>
 
                         {note.tags && note.tags.length > 0 && (
                             <div className="flex flex-wrap gap-2">
                                 {note.tags.map(tag => (
-                                    <span key={tag} className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-50 text-blue-700">
+                                    <span key={tag} className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-muted text-muted-foreground">
                                         <Tag className="w-3 h-3 mr-1" />
                                         {tag}
                                     </span>
@@ -124,7 +124,7 @@ export default function NoteDetailPage() {
                 {/* Related Notes */}
                 {relatedNotes.length > 0 && (
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Notes</h2>
+                        <h2 className="text-2xl font-bold text-foreground mb-6">Related Notes</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {relatedNotes.map(relatedNote => (
                                 <NoteCard

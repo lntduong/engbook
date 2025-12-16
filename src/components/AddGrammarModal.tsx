@@ -117,7 +117,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-slate-900">
+                    <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white">
                         Add Grammar Topic
                     </DialogTitle>
                 </DialogHeader>
@@ -125,13 +125,13 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Title */}
                     <div>
-                        <Label htmlFor="title">Title *</Label>
+                        <Label htmlFor="title" className="text-slate-700 dark:text-slate-200">Title *</Label>
                         <Input
                             id="title"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             placeholder="e.g., Like/Dislike"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                             required
                         />
                     </div>
@@ -139,9 +139,9 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                     {/* Level and Category Row */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label htmlFor="level">Level *</Label>
+                            <Label htmlFor="level" className="text-slate-700 dark:text-slate-200">Level *</Label>
                             <Select value={formData.level} onValueChange={(val) => setFormData({ ...formData, level: val })}>
-                                <SelectTrigger className="mt-2">
+                                <SelectTrigger className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -153,7 +153,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                         </div>
 
                         <div>
-                            <Label htmlFor="category">Category *</Label>
+                            <Label htmlFor="category" className="text-slate-700 dark:text-slate-200">Category *</Label>
                             <div className="space-y-2 mt-2">
                                 <Select
                                     value={isCustomCategory ? 'other' : formData.category}
@@ -167,7 +167,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                                         }
                                     }}
                                 >
-                                    <SelectTrigger>
+                                    <SelectTrigger className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                                         <SelectValue placeholder="Select category" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -182,6 +182,7 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                                         placeholder="Enter new category name"
                                         value={formData.customCategory}
                                         onChange={(e) => setFormData({ ...formData, customCategory: e.target.value })}
+                                        className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                         required
                                     />
                                 )}
@@ -191,27 +192,27 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
 
                     {/* Order */}
                     <div>
-                        <Label htmlFor="order">Order</Label>
+                        <Label htmlFor="order" className="text-slate-700 dark:text-slate-200">Order</Label>
                         <Input
                             id="order"
                             type="number"
                             value={formData.order}
                             onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
                             min="1"
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 
                     {/* Explanation */}
                     <div>
-                        <Label htmlFor="explanation">Explanation *</Label>
+                        <Label htmlFor="explanation" className="text-slate-700 dark:text-slate-200">Explanation *</Label>
                         <Textarea
                             id="explanation"
                             value={formData.explanation}
                             onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
                             placeholder="Explain the grammar rule..."
                             rows={3}
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                             required
                         />
                     </div>
@@ -219,14 +220,14 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                     {/* Structures and Examples */}
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <Label>Structures & Examples</Label>
+                            <Label className="text-slate-700 dark:text-slate-200">Structures & Examples</Label>
                             <Button type="button" variant="outline" size="sm" onClick={handleAddItem}>
                                 + Add Structure
                             </Button>
                         </div>
 
                         {items.map((item, index) => (
-                            <div key={index} className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group">
+                            <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700 relative group">
                                 {items.length > 1 && (
                                     <Button
                                         type="button"
@@ -240,21 +241,21 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
                                 )}
                                 <div className="space-y-3">
                                     <div>
-                                        <Label className="text-xs text-slate-500 uppercase tracking-wider">Structure {index + 1}</Label>
+                                        <Label className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Structure {index + 1}</Label>
                                         <Input
                                             value={item.structure}
                                             onChange={(e) => handleItemChange(index, 'structure', e.target.value)}
                                             placeholder="e.g., I like/love + V-ing"
-                                            className="mt-2 font-mono text-sm"
+                                            className="mt-2 font-mono text-sm border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                         />
                                     </div>
                                     <div>
-                                        <Label className="text-xs text-slate-500 uppercase tracking-wider">Example {index + 1}</Label>
+                                        <Label className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Example {index + 1}</Label>
                                         <Input
                                             value={item.example}
                                             onChange={(e) => handleItemChange(index, 'example', e.target.value)}
                                             placeholder="e.g., I love going to the cinema."
-                                            className="mt-2"
+                                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                             required
                                         />
                                     </div>
@@ -265,14 +266,14 @@ export default function AddGrammarModal({ isOpen, onClose, onAdd }: AddGrammarMo
 
                     {/* Notes */}
                     <div>
-                        <Label htmlFor="notes">Notes (optional)</Label>
+                        <Label htmlFor="notes" className="text-slate-700 dark:text-slate-200">Notes (optional)</Label>
                         <Textarea
                             id="notes"
                             value={formData.notes}
                             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                             placeholder="Additional notes or tips..."
                             rows={3}
-                            className="mt-2"
+                            className="mt-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                         />
                     </div>
 

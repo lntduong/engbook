@@ -103,14 +103,14 @@ export default function NotesPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => router.push('/')}
-                            className="hover:bg-slate-100 flex-shrink-0"
+                            className="hover:bg-muted text-muted-foreground hover:text-foreground flex-shrink-0"
                         >
                             <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
                             Back
                         </Button>
                         <div className="min-w-0">
-                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight truncate">Notes</h1>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 truncate">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight truncate">Notes</h1>
+                            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1 truncate">
                                 Capture your knowledge and review your lessons
                             </p>
                         </div>
@@ -128,22 +128,22 @@ export default function NotesPage() {
                 </div>
 
                 {/* Filters Section */}
-                <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-sm border border-white/50 mb-8">
+                <div className="bg-card/80 backdrop-blur-md rounded-xl p-4 shadow-sm border border-border mb-8">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                             <input
                                 type="text"
                                 placeholder="Search notes, tags, content..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full pl-10 pr-4 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
                             />
                         </div>
                         <div className="flex items-center gap-2 min-w-[200px]">
-                            <Filter size={18} className="text-gray-500" />
+                            <Filter size={18} className="text-muted-foreground" />
                             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                <SelectTrigger className="flex-1 bg-white border-gray-200">
+                                <SelectTrigger className="flex-1 bg-background border-input text-foreground">
                                     <SelectValue placeholder="All Categories" />
                                 </SelectTrigger>
                                 <SelectContent>

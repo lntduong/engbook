@@ -86,8 +86,8 @@ export default function ExercisesPage() {
                             Back
                         </Button>
                         <div className="min-w-0">
-                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight truncate">Practice Arena</h1>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1 truncate">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight truncate">Practice Arena</h1>
+                            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
                                 Challenge yourself with generated quizzes based on your vocabulary and grammar collection.
                             </p>
                         </div>

@@ -25,22 +25,22 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
 
     return (
         <>
-            <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200">
+            <div className="bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all duration-200">
                 <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-semibold text-gray-800 flex-1">
+                    <h3 className="text-xl font-semibold text-card-foreground flex-1">
                         📝 {note.title}
                     </h3>
                     {isAdmin && (
                         <div className="flex gap-2">
                             <button
                                 onClick={() => onEdit(note)}
-                                className="text-blue-600 hover:text-blue-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors"
+                                className="text-primary hover:text-primary/80 text-sm font-medium px-3 py-1 rounded-lg hover:bg-muted transition-colors"
                             >
                                 Edit
                             </button>
                             <button
                                 onClick={() => setShowDeleteAlert(true)}
-                                className="text-red-600 hover:text-red-700 text-sm font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-colors"
+                                className="text-destructive hover:text-destructive/80 text-sm font-medium px-3 py-1 rounded-lg hover:bg-destructive/10 transition-colors"
                             >
                                 Delete
                             </button>
@@ -49,7 +49,7 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
                 </div>
 
                 {note.category && (
-                    <span className="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full mb-3">
+                    <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
                         {note.category}
                     </span>
                 )}
@@ -57,7 +57,7 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
                 {note.tags && note.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-3">
                         {note.tags.map((tag, idx) => (
-                            <span key={idx} className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-md">
+                            <span key={idx} className="px-2 py-0.5 text-xs bg-muted text-muted-foreground rounded-md">
                                 #{tag}
                             </span>
                         ))}
@@ -66,11 +66,11 @@ export default function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
 
 
 
-                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-xs text-gray-400">Last edited: {dateStr}</span>
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                    <span className="text-xs text-muted-foreground">Last edited: {dateStr}</span>
                     <a
                         href={`/notes/${note.id}`}
-                        className="text-indigo-600 hover:text-indigo-700 text-sm font-medium flex items-center gap-1 hover:underline"
+                        className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1 hover:underline"
                     >
                         View Details →
                     </a>

@@ -106,8 +106,8 @@ export default function VocabPage() {
                             Back
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Vocabulary</h1>
-                            <p className="text-slate-500 mt-1">Manage and track your English vocabulary journey.</p>
+                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Vocabulary</h1>
+                            <p className="text-slate-500 dark:text-slate-400 mt-1">Manage and track your English vocabulary journey.</p>
                         </div>
                     </div>
                     {isAdmin && (
