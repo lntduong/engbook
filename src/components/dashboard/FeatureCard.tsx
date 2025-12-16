@@ -15,7 +15,8 @@ export function FeatureCard({ icon: Icon, title, description, href, color = "tex
         <Link
             href={href}
             className={cn(
-                "group block bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1",
+                "group block relative overflow-hidden rounded-2xl border border-white/20 p-6",
+                "bg-white/60 backdrop-blur-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1",
                 "flex flex-col h-full"
             )}
         >

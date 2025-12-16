@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Engbook - Learn English",
   description: "Your personal English learning notebook",
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 import Header from "@/components/Header";

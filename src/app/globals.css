@@ -129,9 +129,10 @@
     @apply bg-background text-foreground;
     background-color: #f8fafc;
     background-image:
-      radial-gradient(at 0% 0%, hsla(237, 100%, 92%, 1) 0, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(195, 100%, 90%, 1) 0, transparent 50%),
-      radial-gradient(at 50% 100%, hsla(280, 100%, 94%, 1) 0, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(250, 100%, 94%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(210, 100%, 90%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(320, 100%, 92%, 1) 0, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(280, 100%, 94%, 1) 0, transparent 50%);
     background-attachment: fixed;
   }
 }
