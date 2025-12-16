@@ -36,9 +36,6 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
         example: ''
     });
     const [levelOptions, setLevelOptions] = useState<string[]>([]);
-    const [typeOptions, setTypeOptions] = useState<string[]>([]);
-    const [isCustomType, setIsCustomType] = useState(false);
-    const [customType, setCustomType] = useState('');
 
     useEffect(() => {
         // Fetch options from API
@@ -46,65 +43,137 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
             .then(res => res.json())
             .then(data => {
                 if (data.levels) setLevelOptions(data.levels);
-                if (data.types) setTypeOptions(data.types);
             })
             .catch(err => console.error('Failed to fetch options:', err));
     }, []);
 
-    // Auto-generate IPA
+    // Auto-generate IPA, Example, and Type
     useEffect(() => {
         const timer = setTimeout(async () => {
-            if (formData.word && !formData.ipa) {
+            if (formData.word) {
                 try {
-                    const fetchIPA = async (text: string) => {
+                    const fetchWordData = async (text: string) => {
                         try {
                             const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${text}`);
                             if (res.ok) {
                                 const data = await res.json();
-                                const phonetics = data[0]?.phonetics;
-                                return phonetics?.find((p: any) => p.text)?.text;
+                                const entry = data[0];
+                                if (!entry) return null;
+
+                                // IPA - try to find one with text
+                                const ipa = entry.phonetics?.find((p: any) => p.text && p.text.trim() !== '')?.text || entry.phonetics?.[0]?.text;
+
+                                // Parsing meaning/example
+                                let example = '';
+                                let type = '';
+
+                                if (entry.meanings && Array.isArray(entry.meanings)) {
+                                    // Default type from first meaning if available
+                                    if (entry.meanings.length > 0) {
+                                        type = entry.meanings[0].partOfSpeech || '';
+                                    }
+
+                                    // Find first definition with an example
+                                    for (const m of entry.meanings) {
+                                        if (m.definitions && Array.isArray(m.definitions)) {
+                                            for (const d of m.definitions) {
+                                                if (d.example) {
+                                                    example = d.example;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (example) break;
+                                    }
+                                }
+
+                                return { ipa, example, type };
                             }
                         } catch (e) {
-                            // Ignore errors for individual words
+                            console.error(`Error fetching data for ${text}:`, e);
                         }
                         return null;
                     };
 
-                    let ipa = await fetchIPA(formData.word);
+                    // 1. Try fetching for the whole word/phrase
+                    const data = await fetchWordData(formData.word);
+                    let newIpa = data?.ipa;
+                    let newExample = data?.example;
+                    let newType = data?.type;
+                    let newMeaning = '';
 
-                    // Fallback for phrases
-                    if (!ipa && formData.word.trim().includes(' ')) {
+                    // 2. Fallback/Enhancement with Gemini AI
+                    // Always try to fetch AI to get Vietnamese meaning and better examples
+                    const shouldFetchAI = true;
+
+                    if (shouldFetchAI) {
+                        try {
+                            const aiRes = await fetch('/api/vocab/ai-generate', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ word: formData.word })
+                            });
+
+                            if (aiRes.ok) {
+                                const aiData = await aiRes.json();
+                                if (aiData) {
+                                    if (!newIpa) newIpa = aiData.ipa;
+                                    if (!newExample) newExample = aiData.example;
+                                    if (!newType || newType === 'noun') newType = aiData.type;
+                                    newMeaning = aiData.meaning;
+                                }
+                            }
+                        } catch (err) {
+                            console.error("AI Generation failed", err);
+                        }
+                    }
+
+                    // 3. Fallback IPA generation for phrases
+                    if (!newIpa && formData.word.trim().includes(' ')) {
                         const words = formData.word.trim().split(/\s+/);
                         if (words.length > 1) {
-                            const ipas = await Promise.all(words.map(w => fetchIPA(w)));
-                            // If we found at least one IPA, combine them
+                            const ipas = await Promise.all(words.map(async w => {
+                                const d = await fetchWordData(w);
+                                return d?.ipa;
+                            }));
+
                             if (ipas.some(i => i)) {
-                                // Strip slashes from individual IPAs and combine
                                 const cleanIpas = ipas.map((p, i) => {
                                     const text = p || words[i];
                                     return text.replace(/^\/|\/$/g, '');
                                 });
-                                ipa = `/${cleanIpas.join(' ')}/`;
+                                newIpa = `/${cleanIpas.join(' ')}/`;
                             }
                         }
                     }
 
-                    if (ipa) {
-                        setFormData(prev => ({ ...prev, ipa }));
-                    }
+                    // Cleanup IPA formatting (ensure slashes)
+                    if (newIpa && !newIpa.startsWith('/')) newIpa = `/${newIpa}`;
+                    if (newIpa && !newIpa.endsWith('/')) newIpa = `${newIpa}/`;
+
+                    // 4. Update state
+                    setFormData(prev => {
+                        const updates: any = {};
+                        if (!prev.ipa && newIpa) updates.ipa = newIpa;
+                        if (!prev.example && newExample) updates.example = newExample;
+                        if (!prev.meaning && newMeaning) updates.meaning = newMeaning;
+                        // Always update type if we have a better one from AI/API
+                        if (newType && newType !== 'noun' && newType !== prev.type) updates.type = newType.toLowerCase();
+
+                        return Object.keys(updates).length > 0 ? { ...prev, ...updates } : prev;
+                    });
+
                 } catch (error) {
-                    console.error('Failed to fetch IPA:', error);
+                    console.error('Failed to auto-generate word data:', error);
                 }
             }
-        }, 500);
+        }, 800); // Increased debounce to 800ms to reduce requests
 
         return () => clearTimeout(timer);
-    }, [formData.word, formData.ipa]);
+    }, [formData.word]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const finalType = isCustomType ? customType : formData.type;
 
         try {
             const res = await fetch('/api/vocab', {
@@ -112,22 +181,16 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...formData,
-                    type: finalType
-                }),
+                body: JSON.stringify(formData),
             });
 
             if (res.ok) {
                 onAdd({
                     ...formData,
-                    type: finalType,
                     id: 'temp-id', // Will be replaced by re-fetch
                     dateAdded: Date.now()
                 });
                 setFormData({ word: '', ipa: '', meaning: '', type: 'noun', level: 'A1', lesson: '', example: '' }); // Reset
-                setIsCustomType(false);
-                setCustomType('');
                 onClose();
             } else {
                 console.error('Failed to add word');
@@ -164,7 +227,10 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                                     setFormData(prev => ({
                                         ...prev,
                                         word: newWord,
-                                        ipa: newWord.trim() ? prev.ipa : ''
+                                        ipa: newWord.trim() ? prev.ipa : '',
+                                        example: newWord.trim() ? prev.example : '',
+                                        meaning: newWord.trim() ? prev.meaning : '',
+                                        type: newWord.trim() ? prev.type : 'noun'
                                     }));
                                 }}
                                 placeholder="e.g. Serendipity"
@@ -191,39 +257,13 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                         <div className="grid gap-2">
                             <Label htmlFor="type" className="text-slate-700 dark:text-slate-200 font-semibold">Type</Label>
                             <div className="space-y-2">
-                                <Select
-                                    value={isCustomType ? 'other' : formData.type}
-                                    onValueChange={(val) => {
-                                        if (val === 'other') {
-                                            setIsCustomType(true);
-                                            setFormData({ ...formData, type: '' });
-                                        } else {
-                                            setIsCustomType(false);
-                                            setFormData({ ...formData, type: val });
-                                        }
-                                    }}
-                                >
-                                    <SelectTrigger className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
-                                        <SelectValue placeholder="Select type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {typeOptions.map(type => (
-                                            <SelectItem key={type} value={type}>
-                                                {type.charAt(0).toUpperCase() + type.slice(1)}
-                                            </SelectItem>
-                                        ))}
-                                        <SelectItem value="other">Other...</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                {isCustomType && (
-                                    <Input
-                                        placeholder="Enter new type"
-                                        value={customType}
-                                        onChange={(e) => setCustomType(e.target.value)}
-                                        className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-                                        required
-                                    />
-                                )}
+                                <Input
+                                    id="type"
+                                    value={formData.type}
+                                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                                    placeholder="e.g. noun, phrase"
+                                    className="border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                                />
                             </div>
                         </div>
                     </div>
@@ -294,6 +334,6 @@ export default function AddWordModal({ isOpen, onClose, onAdd }: AddWordModalPro
                     </DialogFooter>
                 </form>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 }
