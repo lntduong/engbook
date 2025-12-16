@@ -1,7 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { BookOpen, Menu, X, LogIn, LogOut, Shield, User } from 'lucide-react';
+import {
+  BookOpen, Menu, X, LogIn, LogOut, Shield, User,
+  BookA, GraduationCap, NotebookPen, Dumbbell, Youtube, Layers, Languages, Headphones
+} from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
@@ -83,7 +86,65 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="sm:hidden border-t border-slate-200 py-2 bg-white/95">
             <nav className="flex flex-col space-y-1">
-              {/* Mobile Navigation Links Removed */}
+              {/* Mobile Navigation Links */}
+              <div className="px-2 pb-3 space-y-1">
+                <Link
+                  href="/vocab"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                >
+                  <BookA className="w-5 h-5 mr-3 text-blue-600" /> Vocabulary
+                </Link>
+                <Link
+                  href="/grammar"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-purple-600 transition-colors"
+                >
+                  <GraduationCap className="w-5 h-5 mr-3 text-purple-600" /> Grammar
+                </Link>
+                <Link
+                  href="/youglish"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-red-600 transition-colors"
+                >
+                  <Youtube className="w-5 h-5 mr-3 text-red-600" /> Pronunciation
+                </Link>
+                <Link
+                  href="/flashcard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-indigo-600 transition-colors"
+                >
+                  <Layers className="w-5 h-5 mr-3 text-indigo-600" /> Flashcards
+                </Link>
+                <Link
+                  href="/notes"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-yellow-600 transition-colors"
+                >
+                  <NotebookPen className="w-5 h-5 mr-3 text-yellow-600" /> Notes
+                </Link>
+                <Link
+                  href="/exercises"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-green-600 transition-colors"
+                >
+                  <Dumbbell className="w-5 h-5 mr-3 text-green-600" /> Exercises
+                </Link>
+                <Link
+                  href="/listening"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-cyan-600 transition-colors"
+                >
+                  <Headphones className="w-5 h-5 mr-3 text-cyan-600" /> Listening
+                </Link>
+                <Link
+                  href="/translate"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 text-base font-medium text-slate-700 rounded-md hover:bg-slate-50 hover:text-orange-600 transition-colors"
+                >
+                  <Languages className="w-5 h-5 mr-3 text-orange-600" /> Translator
+                </Link>
+              </div>
 
               {/* Mobile Auth */}
               <div className="border-t border-slate-200 pt-2 mt-2">

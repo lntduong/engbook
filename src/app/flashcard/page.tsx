@@ -203,7 +203,7 @@ export default function FlashcardPage() {
                 )}
 
                 {/* Keyboard shortcuts hint */}
-                <div className="mt-12 text-center text-sm text-slate-400">
+                <div className="mt-12 text-center text-sm text-slate-400 hidden sm:block">
                     <p>Keyboard shortcuts: ← → (navigate) | Space (flip) | P (play audio)</p>
                 </div>
             </main>

@@ -69,17 +69,20 @@ export default function TranslatePage() {
                     <Button variant="ghost" size="sm" onClick={() => router.push('/')}>
                         <ArrowLeft className="h-4 w-4 mr-2" /> Back
                     </Button>
-                    <h1 className="text-2xl font-bold text-slate-800">Translator</h1>
+                    <div>
+                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Translator</h1>
+                        <p className="text-slate-500 mt-1">Instantly translate text between multiple languages.</p>
+                    </div>
                 </div>
 
                 {/* Translation Box */}
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 
                     {/* Controls */}
-                    <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
-                        <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50 gap-4">
+                        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                             <Select value={sourceLang} onValueChange={setSourceLang}>
-                                <SelectTrigger className="w-32 bg-white"><SelectValue placeholder="Detect" /></SelectTrigger>
+                                <SelectTrigger className="w-[45%] sm:w-32 bg-white"><SelectValue placeholder="Detect" /></SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="auto">Detect</SelectItem>
                                     {LANGUAGES.map(l => <SelectItem key={l.code} value={l.code}>{l.name}</SelectItem>)}
@@ -91,7 +94,7 @@ export default function TranslatePage() {
                             </Button>
 
                             <Select value={targetLang} onValueChange={setTargetLang}>
-                                <SelectTrigger className="w-32 bg-white"><SelectValue /></SelectTrigger>
+                                <SelectTrigger className="w-[45%] sm:w-32 bg-white"><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                     {LANGUAGES.map(l => <SelectItem key={l.code} value={l.code}>{l.name}</SelectItem>)}
                                 </SelectContent>
@@ -101,7 +104,7 @@ export default function TranslatePage() {
                         <Button
                             onClick={handleTranslate}
                             disabled={loading || !sourceText}
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                         >
                             {loading ? 'Translating...' : 'Translate'}
                         </Button>
