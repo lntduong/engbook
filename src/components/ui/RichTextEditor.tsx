@@ -1,5 +1,4 @@
-'use client';
-
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { BlockNoteView } from '@blocknote/shadcn';
 import { useCreateBlockNote } from '@blocknote/react';
@@ -11,9 +10,10 @@ interface RichTextEditorProps {
     value: string;
     onChange: (content: string) => void;
     placeholder?: string;
+    outputFormat?: 'json' | 'html';
 }
 
-export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
+function Editor({ value, onChange, placeholder, outputFormat = 'json' }: RichTextEditorProps) {
     const { theme, systemTheme } = useTheme();
     const editor = useCreateBlockNote({
         uploadFile: async (file: File) => {
@@ -81,9 +81,14 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
 
     const handleChange = async () => {
         if (editor) {
-            // Save as JSON blocks for better fidelity
-            const json = JSON.stringify(editor.document);
-            onChange(json);
+            if (outputFormat === 'html') {
+                const html = await editor.blocksToHTMLLossy(editor.document);
+                onChange(html);
+            } else {
+                // Save as JSON blocks for better fidelity
+                const json = JSON.stringify(editor.document);
+                onChange(json);
+            }
         }
     };
 
@@ -101,3 +106,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         </div>
     );
 }
+
+export default dynamic(() => Promise.resolve(Editor), {
+    ssr: false,
+    loading: () => <div className="h-[300px] w-full animate-pulse bg-muted rounded-lg" />
+});

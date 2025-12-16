@@ -10,7 +10,8 @@ import {
   Youtube,
   Layers,
   Languages,
-  Headphones
+  Headphones,
+  FileQuestion
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -73,6 +74,13 @@ export default function Dashboard() {
       description: "Quickly translate words and sentences between languages.",
       href: "/translate",
       color: "text-orange-600",
+    },
+    {
+      icon: FileQuestion,
+      title: "Exams",
+      description: "Test your knowledge with real exam questions and time limits.",
+      href: "/exams",
+      color: "text-rose-600",
     },
   ];
 

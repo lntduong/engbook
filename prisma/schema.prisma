@@ -67,3 +67,16 @@ model Note {
 
   @@index([category])
 }
+
+model Exam {
+  id          String   @id @default(uuid())
+  title       String
+  level       String   // e.g., "N1", "IELTS"
+  duration    Int      // Minutes
+  content     String   @db.Text // HTML content of questions
+  answerKey   Json     // { "1": "A", "2": "C" ... }
+  questionsCount Int
+  dateAdded   DateTime @default(now())
+
+  @@index([level])
+}
