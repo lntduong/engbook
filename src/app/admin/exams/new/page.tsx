@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Save } from 'lucide-react';
 import RichTextEditor from '@/components/ui/RichTextEditor';
+import AnswerKeyConfig from '@/components/admin/AnswerKeyConfig';
 
 const LEVELS = ['IELTS', 'TOEIC', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -24,18 +25,7 @@ export default function NewExamPage() {
     });
     const [answerKey, setAnswerKey] = useState<Record<string, string>>({});
 
-    const handleGenerateKeys = () => {
-        const count = formData.questionsCount;
-        const newKeys: Record<string, string> = {};
-        for (let i = 1; i <= count; i++) {
-            newKeys[i.toString()] = answerKey[i.toString()] || 'A';
-        }
-        setAnswerKey(newKeys);
-    };
 
-    const handleKeyChange = (qId: string, value: string) => {
-        setAnswerKey(prev => ({ ...prev, [qId]: value }));
-    };
 
     const handleSubmit = async () => {
         if (!formData.title || !formData.level || !formData.content || formData.questionsCount <= 0) {
@@ -145,53 +135,14 @@ export default function NewExamPage() {
 
                 {/* Sidebar: Answer Key */}
                 <div className="lg:col-span-3 space-y-6">
-                    <Card className="p-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-xl border-slate-200/50 dark:border-slate-800/50 h-full max-h-[calc(100vh-100px)] flex flex-col sticky top-20">
-                        <h3 className="font-semibold mb-4">Answer Key Configuration</h3>
-
-                        <div className="flex items-end gap-2 mb-6">
-                            <div className="flex-1">
-                                <Label>Total Questions</Label>
-                                <Input
-                                    type="number"
-                                    value={formData.questionsCount}
-                                    onChange={e => setFormData({ ...formData, questionsCount: parseInt(e.target.value) || 0 })}
-                                    className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                />
-                            </div>
-                            <Button onClick={handleGenerateKeys} variant="secondary">Set</Button>
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto pr-2 space-y-2">
-                            {Object.keys(answerKey).map((qId) => (
-                                <div key={qId} className="flex items-center gap-2">
-                                    <span className="w-8 text-sm font-medium text-muted-foreground">{qId}.</span>
-                                    <Select
-                                        value={answerKey[qId]}
-                                        onValueChange={(val) => handleKeyChange(qId, val)}
-                                    >
-                                        <SelectTrigger className="h-8 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {['A', 'B', 'C', 'D'].map(opt => (
-                                                <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20" onClick={handleSubmit} disabled={loading}>
-                                {loading ? 'Creating...' : (
-                                    <>
-                                        <Save className="h-4 w-4 mr-2" /> Save Exam
-                                    </>
-                                )}
-                            </Button>
-                        </div>
-                    </Card>
+                    <AnswerKeyConfig
+                        questionsCount={formData.questionsCount}
+                        onQuestionsCountChange={(count) => setFormData({ ...formData, questionsCount: count })}
+                        answerKey={answerKey}
+                        onAnswerKeyChange={setAnswerKey}
+                        onSave={handleSubmit}
+                        loading={loading}
+                    />
                 </div>
             </main>
         </div>
