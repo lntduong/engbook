@@ -142,11 +142,11 @@ export default function ExamPage({ params }: { params: Promise<{ id: string }> }
                 </div>
             </header>
 
-            <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-64px)]">
+            <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Left Panel: Exam Content */}
-                <div className="lg:col-span-9 h-full flex flex-col">
-                    <Card className="flex-1 overflow-y-auto p-6 lg:p-10 shadow-xl border-slate-200/50 dark:border-slate-800/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+                <div className="lg:col-span-9 flex flex-col">
+                    <Card className="flex-1 p-6 lg:p-10 shadow-xl border-slate-200/50 dark:border-slate-800/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
                         <div
                             className="prose dark:prose-invert max-w-none text-foreground"
                             dangerouslySetInnerHTML={{ __html: exam.content }}
@@ -155,25 +155,27 @@ export default function ExamPage({ params }: { params: Promise<{ id: string }> }
                 </div>
 
                 {/* Right Panel: Answer Sheet */}
-                <div className="lg:col-span-3 h-full flex flex-col gap-4">
-                    <AnswerSheet
-                        questionsCount={exam.questionsCount}
-                        userAnswers={userAnswers}
-                        onAnswer={handleAnswer}
-                        showResults={showResults}
-                        answerKey={exam.answerKey}
-                    />
+                <div className="lg:col-span-3">
+                    <div className="sticky top-20 flex flex-col gap-4">
+                        <AnswerSheet
+                            questionsCount={exam.questionsCount}
+                            userAnswers={userAnswers}
+                            onAnswer={handleAnswer}
+                            showResults={showResults}
+                            answerKey={exam.answerKey}
+                        />
 
-                    <div className="flex gap-2">
-                        {!showResults ? (
-                            <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20" onClick={handleSubmit}>
-                                <CheckCircle className="h-4 w-4 mr-2" /> Submit
-                            </Button>
-                        ) : (
-                            <Button className="flex-1" variant="outline" onClick={handleRetry}>
-                                <RotateCcw className="h-4 w-4 mr-2" /> Retry
-                            </Button>
-                        )}
+                        <div className="flex gap-2">
+                            {!showResults ? (
+                                <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20" onClick={handleSubmit}>
+                                    <CheckCircle className="h-4 w-4 mr-2" /> Submit
+                                </Button>
+                            ) : (
+                                <Button className="flex-1" variant="outline" onClick={handleRetry}>
+                                    <RotateCcw className="h-4 w-4 mr-2" /> Retry
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </main>

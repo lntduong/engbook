@@ -22,7 +22,7 @@ export default function AnswerSheet({
     const questions = Array.from({ length: questionsCount }, (_, i) => i + 1);
 
     return (
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex flex-col h-full max-h-[calc(100vh-120px)]">
+        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex flex-col h-full max-h-[calc(100vh-220px)]">
             <div className="p-4 border-b border-slate-200/50 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-800/50">
                 <h3 className="font-semibold text-foreground text-center">Answer Sheet</h3>
             </div>
