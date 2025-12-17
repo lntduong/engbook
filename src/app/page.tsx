@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { FeatureCard } from '@/components/dashboard/FeatureCard';
+import { DailyWord } from '@/components/dashboard/DailyWord';
 import {
   BookA,
   GraduationCap,
@@ -99,13 +100,13 @@ export default function Dashboard() {
 
         {/* Header Section */}
         <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            ENG NOTEBOOK
-          </h1>
           <p className="text-xl text-slate-500 dark:text-slate-400 font-medium">
             Hi, {userName}! Ready to learn something new today?
           </p>
         </div>
+
+        {/* Daily Vocabulary Section */}
+        <DailyWord />
 
         {/* Grid Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

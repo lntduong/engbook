@@ -7,6 +7,8 @@
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
+  --font-sans: var(--font-be-vietnam-pro), sans-serif;
+
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
