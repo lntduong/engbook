@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_DATA")
+}
+
+model Vocabulary {
+  id        String   @id @default(uuid())
+  word      String
+  ipa       String?
+  meaning   String
+  level     String   @default("A1")
+  type      String   @default("noun")
+  lesson    String?
+  example   String?
+  dateAdded DateTime @default(now())
+
+  @@index([level])
+  @@index([word])
+}
+
+model Grammar {
+  id          String   @id @default(uuid())
+  title       String
+  level       String
+  category    String
+  order       Int      @default(0)
+  explanation String   @db.Text
+  structure   String?  @db.Text
+  examples    String   @db.Text
+  notes       String?  @db.Text
+  dateAdded   DateTime @default(now())
+
+  @@index([level])
+  @@index([category])
+}
+
+model Listening {
+  id         String   @id @default(uuid())
+  title      String
+  level      String
+  topic      String
+  order      Int      @default(0)
+  audioUrl   String
+  duration   String
+  transcript String   @db.Text
+  notes      String?  @db.Text
+  myWriting  String?  @db.Text
+  dateAdded  DateTime @default(now())
+
+  @@index([level])
+  @@index([topic])
+}
+
+model Note {
+  id          String   @id @default(uuid())
+  title       String
+  content     String   @db.Text
+  category    String?
+  tags        String[]
+  order       Int      @default(0)
+  dateCreated DateTime @default(now())
+  lastEdited  DateTime @updatedAt
+
+  @@index([category])
+}
+
+model Exam {
+  id          String   @id @default(uuid())
+  title       String
+  level       String   // e.g., "N1", "IELTS"
+  duration    Int      // Minutes
+  content     String   @db.Text // HTML content of questions
+  answerKey   Json     // { "1": "A", "2": "C" ... }
+  questionsCount Int
+  dateAdded   DateTime @default(now())
+
+  @@index([level])
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  resetTokens   PasswordResetToken[]
+
+  @@index([email])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expires   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model Reading {
+  id        String   @id @default(uuid())
+  title     String
+  topic     String
+  level     String
+  content   String   @db.Text
+  vocab     Json     // Detailed vocabulary list
+  grammar   Json     // Grammar points
+  questions Json     // Q&A list
+  dateAdded DateTime @default(now())
+
+  @@index([level])
+  @@index([topic])
+}
